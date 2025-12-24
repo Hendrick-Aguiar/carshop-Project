@@ -11,11 +11,11 @@ public class Brand {
     private Long id;
     private String name;
     private LocalDateTime createdAt;
-    private Long createdBy;
+    private Users createdBy;
     private LocalDateTime updatedAt;
-    private Long updatedBy;
+    private Users updatedBy;
 
-    public Brand(Long id, String name, LocalDateTime createdAt, Long createdBy, LocalDateTime updatedAt, Long updatedBy) {
+    public Brand(Long id, String name, LocalDateTime createdAt, Users createdBy, LocalDateTime updatedAt, Users updatedBy) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
@@ -51,13 +51,13 @@ public class Brand {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    @Column(name = "created_by")
-    public Long getCreatedBy() {
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    public Users getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(Users createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -69,13 +69,14 @@ public class Brand {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    @Column(name = "updated_by")
-    public Long getUpdatedBy() {
+    @ManyToOne
+    @JoinColumn(name = "updated_by")
+    public Users getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Long updatedBy) {
+    public void setUpdatedBy(Users updatedBy) {
+
         this.updatedBy = updatedBy;
     }
 }

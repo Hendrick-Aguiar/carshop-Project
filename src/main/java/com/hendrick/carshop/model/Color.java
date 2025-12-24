@@ -2,31 +2,28 @@ package com.hendrick.carshop.model;
 
 import jakarta.persistence.*;
 
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "model")
-public class Model {
+@Table(schema = "carshop_prdb", name = "color")
+public class Color {
 
     private Long id;
     private String name;
-    private Brand brand;
-    private LocalDateTime createdAt;
     private Users createdBy;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
     private Users updatedBy;
+    private LocalDateTime updatedAt;
 
-
-    public Model(Long id, String name, Brand brand, LocalDateTime createdAt, Users createdBy, LocalDateTime updatedAt, Users updatedBy) {
+    public Color(Long id, String name, Users createdBy, LocalDateTime createdAt, Users updatedBy, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
-        this.brand = brand;
-        this.createdAt = createdAt;
         this.createdBy = createdBy;
-        this.updatedAt = updatedAt;
+        this.createdAt = createdAt;
         this.updatedBy = updatedBy;
+        this.updatedAt = updatedAt;
     }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -36,7 +33,6 @@ public class Model {
     public void setId(Long id) {
         this.id = id;
     }
-
     @Column(name = "name")
     public String getName() {
         return name;
@@ -44,25 +40,6 @@ public class Model {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "brand_id")
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    @Column(name = "created_at")
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
     @ManyToOne
     @JoinColumn(name = "created_by")
@@ -73,13 +50,13 @@ public class Model {
     public void setCreatedBy(Users createdBy) {
         this.createdBy = createdBy;
     }
-    @Column(name = "updated_at")
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    @Column(name = "created_at")
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
     @ManyToOne
     @JoinColumn(name = "updated_by")
@@ -88,7 +65,14 @@ public class Model {
     }
 
     public void setUpdatedBy(Users updatedBy) {
-
         this.updatedBy = updatedBy;
+    }
+    @Column(name = "updated_at")
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
