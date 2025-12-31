@@ -3,12 +3,15 @@ package com.hendrick.carshop.model;
 import com.hendrick.carshop.enums.Role;
 import jakarta.persistence.*;
 
+
 import java.time.LocalDateTime;
 
 
 @Entity
-@Table(schema = "carshop_prdb", name = "users")
-public class Users {
+@Table(schema = "carshop_prdb", name = "user")
+
+public class User {
+
 
     private Long id;
     private String login;
@@ -16,14 +19,13 @@ public class Users {
     private Role role;
     private Boolean active;
     private LocalDateTime createdAt;
-    private Users createdBy;
+    private User createdBy;
     private LocalDateTime updatedAt;
-    private Users updatedBy;
+    private User updatedBy;
 
 
-    public Users(Long id, String login, String passwordHash, Role role, Boolean active, LocalDateTime createdAt, Users createdBy, LocalDateTime updatedAt, Users updatedBy) {
+    public User(Long id, String login, String passwordHash, Role role, Boolean active, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
-        this.login = login;
         this.passwordHash = passwordHash;
         this.role = role;
         this.active = active;
@@ -33,9 +35,10 @@ public class Users {
         this.updatedBy = updatedBy;
     }
 
-    private Users(){
+    public User() {
 
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,11 +98,11 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -114,11 +117,11 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "updated_by")
-    public Users getUpdatedBy() {
+    public User getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Users updatedBy) {
+    public void setUpdatedBy(User updatedBy) {
 
         this.updatedBy = updatedBy;
     }

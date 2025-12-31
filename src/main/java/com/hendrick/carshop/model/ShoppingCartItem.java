@@ -5,19 +5,21 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "brand")
-public class Brand {
+@Table(schema = "carshop_prdb", name = "shopping_cart_item")
+public class ShoppingCartItem {
 
     private Long id;
-    private String name;
+    private ShoppingCart shoppingCart;
+    private Vehicle vehicle;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
 
-    public Brand(Long id, String name, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+    public ShoppingCartItem(Long id, ShoppingCart shoppingCart, Vehicle vehicle, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
-        this.name = name;
+        this.shoppingCart = shoppingCart;
+        this.vehicle = vehicle;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
@@ -34,13 +36,24 @@ public class Brand {
         this.id = id;
     }
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @ManyToOne
+    @JoinColumn(name = "shopping_cart_id")
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     @Column(name = "created_at")
@@ -78,7 +91,7 @@ public class Brand {
     }
 
     public void setUpdatedBy(User updatedBy) {
-
         this.updatedBy = updatedBy;
     }
+
 }

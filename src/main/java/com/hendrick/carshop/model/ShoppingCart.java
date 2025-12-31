@@ -5,19 +5,19 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "brand")
-public class Brand {
+@Table(schema = "carshop_prdb", name = "shopping_cart")
+public class ShoppingCart {
 
     private Long id;
-    private String name;
+    private Client client;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
 
-    public Brand(Long id, String name, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+    public ShoppingCart(Long id, Client client, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
-        this.name = name;
+        this.client = client;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
@@ -34,18 +34,21 @@ public class Brand {
         this.id = id;
     }
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    public Client getClient() {
+        return client;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
+
         return createdAt;
+
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -81,4 +84,5 @@ public class Brand {
 
         this.updatedBy = updatedBy;
     }
+
 }

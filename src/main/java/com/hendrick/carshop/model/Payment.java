@@ -1,23 +1,28 @@
 package com.hendrick.carshop.model;
 
+import com.hendrick.carshop.enums.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "brand")
-public class Brand {
+@Table(schema = "carshop_prdb", name = "payment")
+public class Payment {
 
     private Long id;
-    private String name;
+    private Order order;
+    private PaymentStatus status;
+    private PaymentMethod paymentMethod;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
 
-    public Brand(Long id, String name, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+    public Payment(Long id, Order order, PaymentStatus status, PaymentMethod paymentMethod, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
-        this.name = name;
+        this.order = order;
+        this.status = status;
+        this.paymentMethod = paymentMethod;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
@@ -34,13 +39,33 @@ public class Brand {
         this.id = id;
     }
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    public Order getOrder() {
+        return order;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    @Enumerated(EnumType.STRING)
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "payment_methods_id")
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     @Column(name = "created_at")
@@ -82,3 +107,4 @@ public class Brand {
         this.updatedBy = updatedBy;
     }
 }
+

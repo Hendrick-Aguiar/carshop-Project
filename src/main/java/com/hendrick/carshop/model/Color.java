@@ -11,12 +11,12 @@ public class Color {
 
     private Long id;
     private String name;
-    private Users createdBy;
+    private User createdBy;
     private LocalDateTime createdAt;
-    private Users updatedBy;
+    private User updatedBy;
     private LocalDateTime updatedAt;
 
-    public Color(Long id, String name, Users createdBy, LocalDateTime createdAt, Users updatedBy, LocalDateTime updatedAt) {
+    public Color(Long id, String name, User createdBy, LocalDateTime createdAt, User updatedBy, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.createdBy = createdBy;
@@ -24,6 +24,7 @@ public class Color {
         this.updatedBy = updatedBy;
         this.updatedAt = updatedAt;
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -33,6 +34,7 @@ public class Color {
     public void setId(Long id) {
         this.id = id;
     }
+
     @Column(name = "name")
     public String getName() {
         return name;
@@ -41,15 +43,17 @@ public class Color {
     public void setName(String name) {
         this.name = name;
     }
+
     @ManyToOne
     @JoinColumn(name = "created_by")
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
+
     @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -58,15 +62,17 @@ public class Color {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
     @ManyToOne
     @JoinColumn(name = "updated_by")
-    public Users getUpdatedBy() {
+    public User getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Users updatedBy) {
+    public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
     }
+
     @Column(name = "updated_at")
     public LocalDateTime getUpdatedAt() {
         return updatedAt;

@@ -13,13 +13,16 @@ public class Client {
     private String email;
     private String cpf;
     private String phone;
-    private Users user;
+    private User user;
     private LocalDateTime createdAt;
-    private Users createdBy;
+    private User createdBy;
     private LocalDateTime updatedAt;
-    private Users updatedBy;
+    private User updatedBy;
 
-    public Client(Long id, String name, String email, String cpf, String phone, Users user, LocalDateTime createdAt, Users createdBy, LocalDateTime updatedAt, Users updatedBy) {
+    public Client() {
+    }
+
+    public Client(Long id, String name, String email, String cpf, String phone, User user, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -31,6 +34,7 @@ public class Client {
         this.updatedAt = updatedAt;
         this.updatedBy = updatedBy;
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,12 +82,13 @@ public class Client {
         this.phone = phone;
     }
 
-    @Column(name = "user_id")
-    public Users getUser() {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -98,11 +103,11 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -118,11 +123,11 @@ public class Client {
     @ManyToOne
     @JoinColumn(name = "updated_by")
 
-    public Users getUpdatedBy() {
+    public User getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Users updatedBy) {
+    public void setUpdatedBy(User updatedBy) {
 
         this.updatedBy = updatedBy;
     }

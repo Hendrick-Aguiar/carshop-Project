@@ -2,22 +2,28 @@ package com.hendrick.carshop.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "brand")
-public class Brand {
+@Table(schema = "carshop_prdb", name = "order_item")
+public class OrderItem {
 
     private Long id;
-    private String name;
+    private Order order;
+    private Vehicle vehicle;
+    private BigDecimal priceAtPurchase;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
 
-    public Brand(Long id, String name, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+
+    public OrderItem(Long id, Order order, Vehicle vehicle, BigDecimal priceAtPurchase, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
-        this.name = name;
+        this.order = order;
+        this.vehicle = vehicle;
+        this.priceAtPurchase = priceAtPurchase;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
@@ -27,20 +33,44 @@ public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
+
         return id;
+
     }
 
     public void setId(Long id) {
+
         this.id = id;
+
     }
 
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    public Order getOrder() {
+        return order;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    @Column(name = "price_at_purchase")
+    public BigDecimal getPriceAtPurchase() {
+        return priceAtPurchase;
+    }
+
+    public void setPriceAtPurchase(BigDecimal priceAtPurchase) {
+        this.priceAtPurchase = priceAtPurchase;
     }
 
     @Column(name = "created_at")
@@ -78,7 +108,6 @@ public class Brand {
     }
 
     public void setUpdatedBy(User updatedBy) {
-
         this.updatedBy = updatedBy;
     }
 }

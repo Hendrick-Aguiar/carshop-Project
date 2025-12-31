@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "brand")
-public class Brand {
+@Table(schema = "carshop_prdb", name = "payment_methods")
+public class PaymentMethod {
+
 
     private Long id;
     private String name;
@@ -15,7 +16,8 @@ public class Brand {
     private LocalDateTime updatedAt;
     private User updatedBy;
 
-    public Brand(Long id, String name, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+
+    public PaymentMethod(Long id, String name, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
@@ -78,7 +80,6 @@ public class Brand {
     }
 
     public void setUpdatedBy(User updatedBy) {
-
         this.updatedBy = updatedBy;
     }
 }

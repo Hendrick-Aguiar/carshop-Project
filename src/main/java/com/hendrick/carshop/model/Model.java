@@ -12,12 +12,12 @@ public class Model {
     private String name;
     private Brand brand;
     private LocalDateTime createdAt;
-    private Users createdBy;
+    private User createdBy;
     private LocalDateTime updatedAt;
-    private Users updatedBy;
+    private User updatedBy;
 
 
-    public Model(Long id, String name, Brand brand, LocalDateTime createdAt, Users createdBy, LocalDateTime updatedAt, Users updatedBy) {
+    public Model(Long id, String name, Brand brand, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -64,15 +64,17 @@ public class Model {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
     @ManyToOne
     @JoinColumn(name = "created_by")
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
+
     @Column(name = "updated_at")
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
@@ -81,14 +83,17 @@ public class Model {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
     @ManyToOne
     @JoinColumn(name = "updated_by")
-    public Users getUpdatedBy() {
+    public User getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Users updatedBy) {
+    public void setUpdatedBy(User updatedBy) {
 
         this.updatedBy = updatedBy;
     }
+
+
 }

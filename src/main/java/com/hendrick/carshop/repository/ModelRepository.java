@@ -1,6 +1,7 @@
 package com.hendrick.carshop.repository;
 
-import ch.qos.logback.core.model.Model;
+
+import com.hendrick.carshop.model.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
