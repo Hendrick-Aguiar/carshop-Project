@@ -1,10 +1,10 @@
-package com.hendrick.carshop.repository;
+    package com.hendrick.carshop.repository;
 
 
-import com.hendrick.carshop.model.Model;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+    import com.hendrick.carshop.model.Model;
+    import org.springframework.data.jpa.repository.JpaRepository;
+    import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ModelRepository extends JpaRepository<Model, Long> {
-}
+    @Repository
+    public interface ModelRepository extends JpaRepository<Model, Long> {
+    }

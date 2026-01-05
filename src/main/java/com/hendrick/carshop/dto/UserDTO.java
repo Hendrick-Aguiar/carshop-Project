@@ -6,13 +6,11 @@ public class UserDTO {
 
     private Long id;
     private String login;
-    private Role role;
-    private Boolean active;
+    private String role;
+    private int active;
 
-    public UserDTO(Long id, Boolean active) {
-    }
 
-    public UserDTO(Long id, String login, Role role, Boolean active) {
+    public UserDTO(Long id, String login, String role, int active) {
         this.id = id;
         this.login = login;
         this.role = role;
@@ -36,19 +34,19 @@ public class UserDTO {
         this.login = login;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public Boolean getActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(int active) {
         this.active = active;
     }
 }

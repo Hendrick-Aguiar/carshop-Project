@@ -1,5 +1,6 @@
 package com.hendrick.carshop.model;
 
+import com.hendrick.carshop.dto.UserDTO;
 import com.hendrick.carshop.enums.Role;
 import jakarta.persistence.*;
 
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(schema = "carshop_prdb", name = "user")
+@Table(schema = "carshop_prdb", name = "users")
 
 public class User {
 
@@ -121,8 +122,10 @@ public class User {
         return updatedBy;
     }
 
+    @Column(name = "updated_by")
     public void setUpdatedBy(User updatedBy) {
 
         this.updatedBy = updatedBy;
     }
+
 }

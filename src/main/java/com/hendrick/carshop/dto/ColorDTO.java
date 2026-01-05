@@ -1,24 +1,18 @@
-package com.hendrick.carshop.model;
-
-import jakarta.persistence.*;
+package com.hendrick.carshop.dto;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(schema = "carshop_prdb", name = "colors")
-public class Color {
+public class ColorDTO {
 
     private Long id;
     private String name;
-    private User createdBy;
+    private UserDTO createdBy;
     private LocalDateTime createdAt;
-    private User updatedBy;
+    private UserDTO updatedBy;
     private LocalDateTime updatedAt;
 
-    public Color() {
-    }
-
-    public Color(Long id, String name, User createdBy, LocalDateTime createdAt, User updatedBy, LocalDateTime updatedAt) {
+    public ColorDTO(){}
+    public ColorDTO(Long id, String name, UserDTO createdBy, LocalDateTime createdAt, UserDTO updatedBy, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.createdBy = createdBy;
@@ -27,8 +21,9 @@ public class Color {
         this.updatedAt = updatedAt;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
+
     public Long getId() {
         return id;
     }
@@ -37,7 +32,6 @@ public class Color {
         this.id = id;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -46,17 +40,14 @@ public class Color {
         this.name = name;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    public User getCreatedBy() {
+    public UserDTO getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(UserDTO createdBy) {
         this.createdBy = createdBy;
     }
 
-    @Column(name = "created_at")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -65,17 +56,14 @@ public class Color {
         this.createdAt = createdAt;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "updated_by")
-    public User getUpdatedBy() {
+    public UserDTO getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(User updatedBy) {
+    public void setUpdatedBy(UserDTO updatedBy) {
         this.updatedBy = updatedBy;
     }
 
-    @Column(name = "updated_at")
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }

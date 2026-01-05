@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "client")
+@Table(schema = "carshop_prdb", name = "clients")
 public class Client {
 
     private Long id;

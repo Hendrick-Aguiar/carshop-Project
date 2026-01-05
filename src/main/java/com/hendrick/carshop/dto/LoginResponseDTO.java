@@ -5,6 +5,8 @@ import com.hendrick.carshop.enums.Role;
 
 public class LoginResponseDTO {
 
+
+    private Long userId;
     private Long id;
     private Role role;
     private Boolean active;
@@ -16,7 +18,7 @@ public class LoginResponseDTO {
     private String password;
 
 
-    public LoginResponseDTO(Long id, Role role, Boolean active, String name, String email, String cpf, String phone, String login, String password) {
+    public LoginResponseDTO(Long id, Role role, Boolean active, Long userId, String name, String email, String cpf, String phone, String login, String password) {
         this.id = id;
         this.role = role;
         this.active = active;
@@ -26,6 +28,7 @@ public class LoginResponseDTO {
         this.email = email;
         this.cpf = cpf;
         this.phone = phone;
+        this.userId = userId;
 
     }
 
@@ -57,7 +60,13 @@ public class LoginResponseDTO {
     public void setActive(Boolean active) {
         this.active = active;
     }
+    public Long getUserId() {
+        return userId;
+    }
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
     public String getName() {
         return name;
     }
@@ -105,4 +114,8 @@ public class LoginResponseDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
+
+
 }
