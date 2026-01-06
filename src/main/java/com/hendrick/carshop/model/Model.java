@@ -16,6 +16,9 @@ public class Model {
     private LocalDateTime updatedAt;
     private User updatedBy;
 
+    public Model() {
+    }
+
 
     public Model(Long id, String name, Brand brand, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;

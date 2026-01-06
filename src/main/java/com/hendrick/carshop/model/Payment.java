@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "payment")
+@Table(schema = "carshop_prdb", name = "payments")
 public class Payment {
 
     private Long id;

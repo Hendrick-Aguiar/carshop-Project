@@ -1,10 +1,24 @@
-HELP.md
+# =====================================
+# Maven / Gradle / Build Folders
+# =====================================
 target/
+build/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-### STS ###
+# =====================================
+# IDE Files
+# =====================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse / STS
 .apt_generated
 .classpath
 .factorypath
@@ -13,21 +27,26 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# VS Code
 .vscode/
+
+# =====================================
+# Logs and temporary files
+# =====================================
+*.log
+*.tmp
+*.swp
+
+# =====================================
+# Environment / configuration (DO NOT PUSH SECRETS)
+# =====================================
+application.properties
+application.yml
+.env

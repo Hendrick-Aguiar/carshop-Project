@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "order_item")
+@Table(schema = "carshop_prdb", name = "order_items")
 public class OrderItem {
 
     private Long id;

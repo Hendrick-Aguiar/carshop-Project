@@ -1,27 +1,24 @@
 package com.hendrick.carshop.dto;
 
+
+import com.hendrick.carshop.model.User;
+
 import java.time.LocalDateTime;
 
-public class ModelDTO {
+public class BrandDTO {
 
     private Long id;
     private String name;
-    private Long brand;
-    private String brandName;
     private LocalDateTime createdAt;
     private Long createdBy;
     private LocalDateTime updatedAt;
     private Long updatedBy;
 
 
-    public ModelDTO() {
-    }
-
-    public ModelDTO(Long id, String name, Long brand, String brandName, LocalDateTime createdAt, Long createdBy, LocalDateTime updatedAt, Long updatedBy) {
+    public BrandDTO(){}
+    public BrandDTO(Long id, String name, LocalDateTime createdAt, Long createdBy, LocalDateTime updatedAt, Long updatedBy) {
         this.id = id;
         this.name = name;
-        this.brand = brand;
-        this.brandName = brandName;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
@@ -42,22 +39,6 @@ public class ModelDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Long brand) {
-        this.brand = brand;
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
     }
 
     public LocalDateTime getCreatedAt() {

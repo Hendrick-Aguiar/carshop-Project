@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "vehicle")
-public class Vehicle {
+@Table(schema = "carshop_prdb", name = "vehicles")
+public class Vehicle{
 
     private Long id;
     private String licencePlate;

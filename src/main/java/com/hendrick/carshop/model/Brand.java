@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "carshop_prdb", name = "brand")
+@Table(schema = "carshop_prdb", name = "brands")
 public class Brand {
 
     private Long id;
@@ -23,6 +23,8 @@ public class Brand {
         this.updatedAt = updatedAt;
         this.updatedBy = updatedBy;
     }
+
+    public Brand(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
