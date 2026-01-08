@@ -1,5 +1,7 @@
 package com.hendrick.carshop.dto;
 
+import com.hendrick.carshop.enums.VehicleStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -17,7 +19,7 @@ public class VehicleDTO {
     private Long colorId;
     private String color;
     private BigDecimal price;
-    private String status;
+    private VehicleStatus status;
     private Long shoppingCartItem;
     private LocalDateTime createdAt;
     private String createdBy;
@@ -123,11 +125,11 @@ public class VehicleDTO {
         this.price = price;
     }
 
-    public String getStatus() {
+    public VehicleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(VehicleStatus status) {
         this.status = status;
     }
 
@@ -171,7 +173,7 @@ public class VehicleDTO {
         this.updatedBy = updatedBy;
     }
 
-    public VehicleDTO(Long id, String licencePlate, String chassis, String renavam, int year, Long modelId, String model, Long brandId, String brand, Long colorId, String color, BigDecimal price, String status, Long shoppingCartItem, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public VehicleDTO(Long id, String licencePlate, String chassis, String renavam, int year, Long modelId, String model, Long brandId, String brand, Long colorId, String color, BigDecimal price, VehicleStatus status, Long shoppingCartItem, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
         this.id = id;
         this.licencePlate = licencePlate;
         this.chassis = chassis;

@@ -1,5 +1,6 @@
 package com.hendrick.carshop.model;
 
+import com.hendrick.carshop.enums.VehicleStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -17,14 +18,14 @@ public class Vehicle{
     private Model model;
     private Color color;
     private BigDecimal price;
-    private String status;
+    private VehicleStatus status;
     private ShoppingCartItem shoppingCartItem;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
 
-    public Vehicle(Long id, String licencePlate, String chassis, String renavam, int year, Model model, Color color, BigDecimal price, String status, ShoppingCartItem shoppingCartItem, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+    public Vehicle(Long id, String licencePlate, String chassis, String renavam, int year, Model model, Color color, BigDecimal price, VehicleStatus status, ShoppingCartItem shoppingCartItem, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
         this.licencePlate = licencePlate;
         this.chassis = chassis;
@@ -118,13 +119,13 @@ public class Vehicle{
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    public String getStatus() {
+    public VehicleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(VehicleStatus status) {
         this.status = status;
     }
 

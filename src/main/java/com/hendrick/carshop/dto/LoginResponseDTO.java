@@ -7,7 +7,7 @@ public class LoginResponseDTO {
 
 
     private Long userId;
-    private Long id;
+    private Long clientId;
     private Role role;
     private Boolean active;
     private String name;
@@ -17,32 +17,35 @@ public class LoginResponseDTO {
     private String login;
     private String password;
 
+     public LoginResponseDTO(){}
 
-    public LoginResponseDTO(Long id, Role role, Boolean active, Long userId, String name, String email, String cpf, String phone, String login, String password) {
-        this.id = id;
+    public LoginResponseDTO(Long userId, Long clientId, Role role, Boolean active, String name, String email, String cpf, String phone, String login, String password) {
+        this.userId = userId;
+        this.clientId = clientId;
         this.role = role;
         this.active = active;
-        this.login = login;
-        this.password = password;
         this.name = name;
         this.email = email;
         this.cpf = cpf;
         this.phone = phone;
+        this.login = login;
+        this.password = password;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
         this.userId = userId;
-
     }
 
-    public LoginResponseDTO() {
-
+    public Long getClientId() {
+        return clientId;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public Role getRole() {
@@ -60,13 +63,7 @@ public class LoginResponseDTO {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    public Long getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
     public String getName() {
         return name;
     }
@@ -114,8 +111,4 @@ public class LoginResponseDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-
-
 }

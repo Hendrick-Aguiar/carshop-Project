@@ -122,7 +122,6 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "updated_by")
-
     public User getUpdatedBy() {
         return updatedBy;
     }

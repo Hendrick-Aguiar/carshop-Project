@@ -26,6 +26,13 @@ public class ShoppingCartItem {
         this.updatedBy = updatedBy;
     }
 
+    public ShoppingCartItem() {
+        
+    }
+
+    public ShoppingCartItem(Long id, Long shoppingCart, String vehicle, LocalDateTime createdAt) {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -93,5 +100,6 @@ public class ShoppingCartItem {
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
     }
+
 
 }

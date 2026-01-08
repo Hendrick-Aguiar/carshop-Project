@@ -1,8 +1,10 @@
 package com.hendrick.carshop.model;
 
+import com.hendrick.carshop.enums.ShoppingCartStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(schema = "carshop_prdb", name = "shopping_carts")
@@ -10,19 +12,27 @@ public class ShoppingCart {
 
     private Long id;
     private Client client;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ShoppingCartStatus status;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
+    private List<ShoppingCartItem> shoppingCartItem;
 
-    public ShoppingCart(Long id, Client client, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+    public ShoppingCart(Long id, Client client, ShoppingCartStatus status, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy, List<ShoppingCartItem> shoppingCartItem) {
         this.id = id;
         this.client = client;
+        this.status = status;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
         this.updatedBy = updatedBy;
+        this.shoppingCartItem = shoppingCartItem;
     }
+
+    public ShoppingCart() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +52,27 @@ public class ShoppingCart {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    public ShoppingCartStatus getStatus(){
+
+        return status;
+
+    }
+
+    public void setStatus(ShoppingCartStatus status){
+
+        this.status = status;
+
+    }
+
+    @Column(name = "client")
+    public void getClient(ShoppingCartStatus status){
+
+        this.status = status;
+
     }
 
     @Column(name = "created_at")
@@ -84,5 +115,12 @@ public class ShoppingCart {
 
         this.updatedBy = updatedBy;
     }
+    @OneToMany(mappedBy = "shoppingCart" , cascade = CascadeType.ALL)
+    public List<ShoppingCartItem> getShoppingCartItem() {
+        return shoppingCartItem;
+    }
 
+    public void setShoppingCartItem(List<ShoppingCartItem> shoppingCartItem) {
+        this.shoppingCartItem = shoppingCartItem;
+    }
 }

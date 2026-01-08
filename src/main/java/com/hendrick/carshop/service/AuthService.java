@@ -104,7 +104,7 @@ public class AuthService {
 
         //if client exists, add cliente data to the dto
         if (client.isPresent()) {
-            logResDTO.setId(client.get().getId());
+            logResDTO.setClientId(client.get().getId());
             logResDTO.setName(client.get().getName());
             logResDTO.setEmail(client.get().getEmail());
             logResDTO.setCpf(client.get().getCpf());

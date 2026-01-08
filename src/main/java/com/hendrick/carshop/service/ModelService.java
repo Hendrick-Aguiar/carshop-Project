@@ -40,12 +40,12 @@ public class ModelService {
     }
 
     //Read: ListAll
-    public List<ModelDTO> findAll(){
+    public List<ModelDTO> findAll() {
 
         List<Model> models = modelRepository.findAll();
         List<ModelDTO> modelDTOList = new ArrayList<>();
 
-        for (Model model: models){
+        for (Model model : models) {
 
             ModelDTO dto = new ModelDTO();
             dto.setId(model.getId());
