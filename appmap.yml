@@ -1,0 +1,5 @@
+language: "java"
+name: "carshop"
+appmap_dir: "tmp/appmap"
+packages:
+- path: "com.hendrick.carshop"

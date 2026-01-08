@@ -1,0 +1,533 @@
+@startuml
+class com.hendrick.carshop.controller.AuthController {
+- AuthService authService
++ ResponseEntity<ClientDTO> register(ClientDTO)
++ ResponseEntity<LoginResponseDTO> login(AuthDTO)
++ ResponseEntity<ClientDTO> update(String,ClientDTO)
+}
+
+
+class com.hendrick.carshop.CarshopApplication {
++ {static} void main(String[])
+}
+
+class com.hendrick.carshop.controller.ColorController {
+- ColorService colorService
++ ResponseEntity<ColorDTO> findById(Long)
++ ResponseEntity<List<ColorDTO>> findAll()
+}
+
+
+class com.hendrick.carshop.model.OrderItem {
+- Long id
+- Order order
+- Vehicle vehicle
+- BigDecimal priceAtPurchase
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ Order getOrder()
++ void setOrder(Order)
++ Vehicle getVehicle()
++ void setVehicle(Vehicle)
++ BigDecimal getPriceAtPurchase()
++ void setPriceAtPurchase(BigDecimal)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+enum com.hendrick.carshop.enums.Role {
++  ADMIN
++  USER
+}
+
+class com.hendrick.carshop.model.Vehicle {
+- Long id
+- String licencePlate
+- String chassis
+- String renavam
+- int year
+- Model model
+- Color color
+- BigDecimal price
+- String status
+- ShoppingCartItem shoppingCartItem
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ String getLicencePlate()
++ void setLicencePlate(String)
++ String getChassis()
++ void setChassis(String)
++ String getRenavam()
++ void setRenavam(String)
++ int getYear()
++ void setYear(int)
++ Model getModel()
++ void setModel(Model)
++ Color getColor()
++ void setColor(Color)
++ BigDecimal getPrice()
++ void setPrice(BigDecimal)
++ String getStatus()
++ void setStatus(String)
++ ShoppingCartItem getShoppingCartItem()
++ void setShoppingCartItem(ShoppingCartItem)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.model.Payment {
+- Long id
+- Order order
+- PaymentStatus status
+- PaymentMethod paymentMethod
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ Order getOrder()
++ void setOrder(Order)
++ PaymentStatus getStatus()
++ void setStatus(PaymentStatus)
++ PaymentMethod getPaymentMethod()
++ void setPaymentMethod(PaymentMethod)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.dto.UserDTO {
+- Long id
+- String login
+- String role
+- int active
++ Long getId()
++ void setId(Long)
++ String getLogin()
++ void setLogin(String)
++ String getRole()
++ void setRole(String)
++ int getActive()
++ void setActive(int)
+}
+
+
+interface com.hendrick.carshop.repository.ClientRepository {
++ Optional<Client> findByCpf(String)
+~ Optional<Client> findByUserId(Long)
+}
+
+class com.hendrick.carshop.dto.ModelDTO {
+}
+class com.hendrick.carshop.dto.LoginResponseDTO {
+- Long userId
+- Long id
+- Role role
+- Boolean active
+- String name
+- String email
+- String cpf
+- String phone
+- String login
+- String password
++ Long getId()
++ void setId(Long)
++ Role getRole()
++ void setRole(Role)
++ Boolean getActive()
++ void setActive(Boolean)
++ Long getUserId()
++ void setUserId(Long)
++ String getName()
++ void setName(String)
++ String getEmail()
++ void setEmail(String)
++ String getCpf()
++ void setCpf(String)
++ String getPhone()
++ void setPhone(String)
++ String getLogin()
++ void setLogin(String)
++ String getPassword()
++ void setPassword(String)
+}
+
+
+class com.hendrick.carshop.dto.AuthDTO {
+- String login
+- String password
++ String getLogin()
++ void setLogin(String)
++ String getPassword()
++ void setPassword(String)
+}
+
+
+class com.hendrick.carshop.dto.ColorDTO {
+- Long id
+- String name
+- UserDTO createdBy
+- LocalDateTime createdAt
+- UserDTO updatedBy
+- LocalDateTime updatedAt
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ UserDTO getCreatedBy()
++ void setCreatedBy(UserDTO)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ UserDTO getUpdatedBy()
++ void setUpdatedBy(UserDTO)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
+}
+
+
+interface com.hendrick.carshop.repository.ColorRepository {
+}
+interface com.hendrick.carshop.repository.ModelRepository {
+}
+class com.hendrick.carshop.service.ModelService {
+- ModelRepository modelRepository
+}
+
+enum com.hendrick.carshop.enums.PaymentStatus {
++  PENDING
++  AUTHORIZED
++  COMPLETED
++  FAILED
++  CANCELLED
++  REFUNDED
+}
+
+class com.hendrick.carshop.model.Color {
+- Long id
+- String name
+- User createdBy
+- LocalDateTime createdAt
+- User updatedBy
+- LocalDateTime updatedAt
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
+}
+
+
+class com.hendrick.carshop.model.User {
+- Long id
+- String login
+- String passwordHash
+- Role role
+- Boolean active
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ String getLogin()
++ void setLogin(String)
++ String getPasswordHash()
++ void setPasswordHash(String)
++ Role getRole()
++ void setRole(Role)
++ Boolean getActive()
++ void setActive(Boolean)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+interface com.hendrick.carshop.repository.UserRepository {
++ Optional<User> findByLogin(String)
+}
+
+class com.hendrick.carshop.model.PaymentMethod {
+- Long id
+- String name
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.service.AuthService {
+- ClientRepository clientRepository
+- UserRepository userRepository
++ ClientDTO register(ClientDTO)
++ LoginResponseDTO login(AuthDTO)
++ ClientDTO update(String,ClientDTO)
+}
+
+
+interface com.hendrick.carshop.repository.VehicleInterface {
++ Vehicle findVehicleById(Long)
+}
+
+class com.hendrick.carshop.model.Model {
+- Long id
+- String name
+- Brand brand
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ Brand getBrand()
++ void setBrand(Brand)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+interface com.hendrick.carshop.repository.BrandInterface {
++ Brand findBrandById(Long)
+}
+
+class com.hendrick.carshop.dto.ClientDTO {
+- Long id
+- String login
+- String password
+- String name
+- String email
+- String cpf
+- String phone
++ Long getId()
++ void setId(Long)
++ String getLogin()
++ void setLogin(String)
++ String getPassword()
++ void setPassword(String)
++ String getName()
++ void setName(String)
++ String getEmail()
++ void setEmail(String)
++ String getCpf()
++ void setCpf(String)
++ String getPhone()
++ void setPhone(String)
+}
+
+
+class com.hendrick.carshop.CarshopApplicationTests {
+~ void contextLoads()
+}
+
+class com.hendrick.carshop.model.Order {
++ Long id
+- Client client
+- BigDecimal TotalAmount
+- int status
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ Client getClient()
++ void setClient(Client)
++ BigDecimal getTotalAmount()
++ void setTotalAmount(BigDecimal)
++ int getStatus()
++ void setStatus(int)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.model.Client {
+- Long id
+- String name
+- String email
+- String cpf
+- String phone
+- User user
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ String getEmail()
++ void setEmail(String)
++ String getCpf()
++ void setCpf(String)
++ String getPhone()
++ void setPhone(String)
++ User getUser()
++ void setUser(User)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.model.Brand {
+- Long id
+- String name
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ String getName()
++ void setName(String)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.service.ColorService {
+- ColorRepository colorRepository
++ ColorDTO findById(Long)
++ List<ColorDTO> findAll()
+}
+
+
+interface com.hendrick.carshop.repository.BrandRepository {
+}
+class com.hendrick.carshop.model.ShoppingCartItem {
+- Long id
+- ShoppingCart shoppingCart
+- Vehicle vehicle
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ ShoppingCart getShoppingCart()
++ void setShoppingCart(ShoppingCart)
++ Vehicle getVehicle()
++ void setVehicle(Vehicle)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+class com.hendrick.carshop.model.ShoppingCart {
+- Long id
+- Client client
+- LocalDateTime createdAt
+- User createdBy
+- LocalDateTime updatedAt
+- User updatedBy
++ Long getId()
++ void setId(Long)
++ Client getClient()
++ void setClient(Client)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ User getCreatedBy()
++ void setCreatedBy(User)
++ LocalDateTime getUpdatedAt()
++ void setUpdatedAt(LocalDateTime)
++ User getUpdatedBy()
++ void setUpdatedBy(User)
+}
+
+
+
+
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.ClientRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.ColorRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.ModelRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.UserRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.VehicleInterface
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.BrandInterface
+org.springframework.data.jpa.repository.JpaRepository <|-- com.hendrick.carshop.repository.BrandRepository
+@enduml
