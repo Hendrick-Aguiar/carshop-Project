@@ -2,8 +2,6 @@ package com.hendrick.carshop.controller;
 
 import com.hendrick.carshop.dto.CartDTO;
 import com.hendrick.carshop.dto.ShoppingCartDTO;
-import com.hendrick.carshop.model.ShoppingCart;
-import com.hendrick.carshop.model.ShoppingCartItem;
 import com.hendrick.carshop.service.ShoppingCartItemService;
 import com.hendrick.carshop.service.ShoppingCartService;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +39,12 @@ public class ShoppingCartController {
 
     }
 
-    @PostMapping("/items")
-    public ResponseEntity<List<CartDTO>> findAll(@RequestBody CartDTO dto){
-
-        return ResponseEntity.ok(shoppingCartService.findAllCartItems(dto.getUserId(), dto.getItemId()));
-
-    }
+//    @PostMapping("/items")
+//    public ResponseEntity<List<CartDTO>> findAll(@RequestBody CartDTO dto){
+//
+//        return ResponseEntity.ok(shoppingCartService.findAllCartItems(dto.getUserId(), dto.getItemId()));
+//
+//    }
 
 
 

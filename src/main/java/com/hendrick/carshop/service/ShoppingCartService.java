@@ -97,31 +97,12 @@ public class ShoppingCartService {
 //        shoppingCartItem.setVehicle(vehicle);
 //        sho().add(shoppingCartItem);
 //        shoppingCartRepository.save(shoppingCart);
-public List<CartDTO> findAllCartItems(Long userId, Long vehicleId){
-
-        Client client = clientRepository.findByUserId(userId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
-
-        Vehicle vehicle = vehicleRepository.findByIdAndStatus(vehicleId, VehicleStatus.AVAILABLE).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not avaliable."));
-
-        ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseGet(()-> createNewCart(client));
-
-        List<ShoppingCart> carts = shoppingCartRepository.findAll();
-        List<CartDTO> cartDTOList = new ArrayList<>();
-
-        for (ShoppingCart cart: carts){
-
-            CartDTO cartDTO = new CartDTO();
-            cartDTO.setItemId(cart.getShoppingCartItem());
-
-            cartDTOList.add(cartDTO);
-        }
-        return cartDTOList;
 
 
 
 
 
 
-    }
+
 
 }
