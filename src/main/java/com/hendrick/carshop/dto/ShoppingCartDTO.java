@@ -1,40 +1,30 @@
 package com.hendrick.carshop.dto;
 
 import com.hendrick.carshop.enums.ShoppingCartStatus;
+import com.hendrick.carshop.model.ShoppingCart;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ShoppingCartDTO {
 
     private Long id;
-    private Long client;
-    private String clientName;
+    private Long clientId;
     private ShoppingCartStatus status;
-    private LocalDateTime createdAt;
-    private String createdBy;
-    private LocalDateTime updatedAt;
-    private String updatedBy;
-    private Long userId;
-    private Long items;
+    private List<ShoppingCartItemDTO> items;
+    private int totalItems;
+    private BigDecimal totalValue;
 
-    public ShoppingCartDTO (){}
-
-    public ShoppingCartDTO(Long id, Long client, String clientName, ShoppingCartStatus status, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy, Long userId, Long items) {
+    public ShoppingCartDTO(){}
+    public ShoppingCartDTO(Long id, Long clientId, ShoppingCartStatus status, List<ShoppingCartItemDTO> items, int totalItems, BigDecimal totalValue) {
         this.id = id;
-        this.client = client;
-        this.clientName = clientName;
+        this.clientId = clientId;
         this.status = status;
-        this.createdAt = createdAt;
-        this.createdBy = createdBy;
-        this.updatedAt = updatedAt;
-        this.updatedBy = updatedBy;
-        this.userId = userId;
         this.items = items;
+        this.totalItems = totalItems;
+        this.totalValue = totalValue;
     }
-
-
-
-
 
     public Long getId() {
         return id;
@@ -44,20 +34,12 @@ public class ShoppingCartDTO {
         this.id = id;
     }
 
-    public Long getClient() {
-        return client;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public void setClient(Long client) {
-        this.client = client;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public ShoppingCartStatus getStatus() {
@@ -68,51 +50,27 @@ public class ShoppingCartDTO {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getItems() {
+    public List<ShoppingCartItemDTO> getItems() {
         return items;
     }
 
-    public void setItems(Long items) {
+    public void setItems(List<ShoppingCartItemDTO> items) {
         this.items = items;
+    }
+
+    public int getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
     }
 }

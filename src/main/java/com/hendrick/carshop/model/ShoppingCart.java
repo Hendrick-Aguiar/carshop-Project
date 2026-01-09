@@ -19,9 +19,9 @@ public class ShoppingCart {
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
-    private List<ShoppingCartItem> shoppingCartItem;
+    private List<ShoppingCartItem> items;
 
-    public ShoppingCart(Long id, Client client, ShoppingCartStatus status, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy, List<ShoppingCartItem> shoppingCartItem) {
+    public ShoppingCart(Long id, Client client, ShoppingCartStatus status, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy, List<ShoppingCartItem> items) {
         this.id = id;
         this.client = client;
         this.status = status;
@@ -29,10 +29,11 @@ public class ShoppingCart {
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
         this.updatedBy = updatedBy;
-        this.shoppingCartItem = shoppingCartItem;
+        this.items = items;
     }
 
-    public ShoppingCart() {}
+    public ShoppingCart() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,20 +57,20 @@ public class ShoppingCart {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    public ShoppingCartStatus getStatus(){
+    public ShoppingCartStatus getStatus() {
 
         return status;
 
     }
 
-    public void setStatus(ShoppingCartStatus status){
+    public void setStatus(ShoppingCartStatus status) {
 
         this.status = status;
 
     }
 
     @Column(name = "client")
-    public void getClient(ShoppingCartStatus status){
+    public void getClient(ShoppingCartStatus status) {
 
         this.status = status;
 
@@ -115,12 +116,41 @@ public class ShoppingCart {
 
         this.updatedBy = updatedBy;
     }
-    @OneToMany(mappedBy = "shoppingCart" , cascade = CascadeType.ALL)
-    public List<ShoppingCartItem> getShoppingCartItem() {
-        return shoppingCartItem;
+
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL)
+    public List<ShoppingCartItem> getItems() {
+        return this.items;
     }
 
-    public void setShoppingCartItem(List<ShoppingCartItem> shoppingCartItem) {
-        this.shoppingCartItem = shoppingCartItem;
+    public void setShoppingCartItem(List<ShoppingCartItem> items) {
+        this.items = items;
     }
+
+    public void setItems(List<ShoppingCartItem> items) {
+        this.items = items;
+    }
+
+    public void addItem(Vehicle vehicle, User user) {
+
+        if (this.status != ShoppingCartStatus.ACTIVE) {
+
+            throw new IllegalStateException("Cart is not avaliable.");
+
+        }
+
+
+        boolean alreadyExists = items.stream().anyMatch(item -> item.getVehicle().equals(vehicle));
+
+        if (alreadyExists) {
+
+            throw new IllegalArgumentException("Vehicle in the way.");
+
+        }
+
+        ShoppingCartItem item = new ShoppingCartItem(this, vehicle, user);
+
+        items.add(item);
+
+    }
+
 }

@@ -7,13 +7,14 @@ import java.util.List;
 public class CartDTO {
 
     private Long userId;
+    private Long vehicleId;
     private List<ShoppingCartItem> itemId;
 
 
     public CartDTO(){}
 
 
-    public CartDTO(Long userId, List<ShoppingCartItem> items) {
+    public CartDTO(Long userId, Long vehicleId, List<ShoppingCartItem> items) {
         this.userId = userId;
         this.itemId = items;
     }

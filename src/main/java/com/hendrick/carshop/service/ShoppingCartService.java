@@ -1,8 +1,8 @@
 package com.hendrick.carshop.service;
 
-import com.hendrick.carshop.dto.CartDTO;
 import com.hendrick.carshop.dto.ShoppingCartDTO;
 import com.hendrick.carshop.dto.ShoppingCartItemDTO;
+import com.hendrick.carshop.dto.VehicleDTO;
 import com.hendrick.carshop.enums.ShoppingCartStatus;
 import com.hendrick.carshop.enums.VehicleStatus;
 import com.hendrick.carshop.model.Client;
@@ -10,12 +10,14 @@ import com.hendrick.carshop.model.ShoppingCart;
 import com.hendrick.carshop.model.ShoppingCartItem;
 import com.hendrick.carshop.model.Vehicle;
 import com.hendrick.carshop.repository.ClientRepository;
+import com.hendrick.carshop.repository.ShoppingCartItemRepository;
 import com.hendrick.carshop.repository.ShoppingCartRepository;
 import com.hendrick.carshop.repository.VehicleRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +29,24 @@ public class ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ClientRepository clientRepository;
     private final VehicleRepository vehicleRepository;
+    private final ShoppingCartItemRepository shoppingCartItemRepository;
 
 
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository, ClientRepository clientRepository, VehicleRepository vehicleRepository) {
+    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository, ClientRepository clientRepository, VehicleRepository vehicleRepository, ShoppingCartItemRepository shoppingCartItemRepository) {
 
         this.shoppingCartRepository = shoppingCartRepository;
         this.clientRepository = clientRepository;
         this.vehicleRepository = vehicleRepository;
+        this.shoppingCartItemRepository = shoppingCartItemRepository;
     }
 
 
     //Create Verify or Shopping Cart        //Login >> auth >>> userId>>Client
+
     /**
      * Logic: If the user has an ACTIVE cart, return it.
-     * If they don't have one, create a new one first.*/
+     * If they don't have one, create a new one first.
+     */
     public ShoppingCartDTO getOrCreateActiveCart(Long userId) {
 
         // 1. Convert the userId (from login) into a Client entity.
@@ -66,9 +72,8 @@ public class ShoppingCartService {
         // 4. Mapping: Convert the Database Entity into a DTO (Data Transfer Object).
         // This hides internal DB fields and sends only what the frontend needs.
         ShoppingCartDTO dto = new ShoppingCartDTO();
-        dto.setClientName(cart.getClient().getName());
-        dto.setStatus(cart.getStatus());
-        dto.setCreatedAt(cart.getCreatedAt());
+
+
         return dto;
 
     }
@@ -83,26 +88,57 @@ public class ShoppingCartService {
 
         return shoppingCartRepository.save(cart);
     }
+
+    public ShoppingCartDTO addItemToCart(Long userId, Long vehicleId) {
+
+        Client client = clientRepository.findByUserId(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+
+        Vehicle vehicle = vehicleRepository.findByIdAndStatus(vehicleId, VehicleStatus.AVAILABLE).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not avaliable."));
+
+        ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseGet(() -> createNewCart(client));
+
+        shoppingCart.addItem(vehicle, client.getUser());
+
+        shoppingCart = shoppingCartRepository.save(shoppingCart);
+
+        ShoppingCartDTO dto = new ShoppingCartDTO();
+        dto.setId(shoppingCart.getId());
+        dto.setClientId(shoppingCart.getClient().getId());
+        dto.setStatus(shoppingCart.getStatus());
+        List<ShoppingCartItemDTO> shoppingCartItemDTO = new ArrayList<>();
+
+
+
+        for (ShoppingCartItem cart : shoppingCart.getItems()) {
+
+            ShoppingCartItemDTO itemDTO = new ShoppingCartItemDTO();
+            itemDTO.setId(cart.getId());
+            itemDTO.setVehicleId(cart.getVehicle().getId());
+            itemDTO.setVehicleName(cart.getVehicle().getModel().getName());
+            itemDTO.setPrice(cart.getVehicle().getPrice());
+
+
+            shoppingCartItemDTO.add(itemDTO);
+
+
+        }
+        dto.setItems(shoppingCartItemDTO);
+        dto.setTotalItems(shoppingCart.getItems().size());
+        dto.setItems(shoppingCartItemDTO);
+        BigDecimal totalValue = shoppingCart.getItems().stream()
+                .map(cart -> cart.getVehicle().getPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            dto.setTotalValue(totalValue);
+            return dto;
+//        List<ShoppingCartItem> cartItems =  shoppingCartItemRepository.findAllById(vehicleId);
+//        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
 //
-//    public List<CartDTO> addItemToCart(Long userId, Long vehicleId){
+//        for (ShoppingCartItem item : cartItems){
 //
-//        Client client = clientRepository.findByUserId(userId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
-//
-//        Vehicle vehicle = vehicleRepository.findByIdAndStatus(vehicleId, VehicleStatus.AVAILABLE).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not avaliable."));
-//
-//        ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseGet(()-> createNewCart(client));
-//
-//        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-//        shoppingCartItem.setShoppingCart(shoppingCart);
-//        shoppingCartItem.setVehicle(vehicle);
-//        sho().add(shoppingCartItem);
-//        shoppingCartRepository.save(shoppingCart);
+//            VehicleDTO vehicleDTO = new VehicleDTO();
+//            vehicleDTO.setId(item.getVehicle().getId());
 
 
-
-
-
-
-
+    }
 
 }

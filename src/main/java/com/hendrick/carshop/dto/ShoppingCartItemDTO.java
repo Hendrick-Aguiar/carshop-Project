@@ -1,30 +1,27 @@
 package com.hendrick.carshop.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ShoppingCartItemDTO {
 
 
     private Long id;
-    private Long shoppingCart;
-    private Long vehicle;
-    private LocalDateTime createdAt;
-    private String createdBy;
-    private LocalDateTime updatedAt;
-    private String updatedBy;
+    private Long vehicleId;
+    private String vehicleName;
+    private BigDecimal price;
 
-
-    public ShoppingCartItemDTO(){}
-
-    public ShoppingCartItemDTO(Long id, Long shoppingCart, Long vehicle, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+    public ShoppingCartItemDTO(Long id, Long vehicleId, String vehicleName, BigDecimal price) {
         this.id = id;
-        this.shoppingCart = shoppingCart;
-        this.vehicle = vehicle;
-        this.createdAt = createdAt;
-        this.createdBy = createdBy;
-        this.updatedAt = updatedAt;
-        this.updatedBy = updatedBy;
+        this.vehicleId = vehicleId;
+        this.vehicleName = vehicleName;
+        this.price = price;
     }
+
+    public ShoppingCartItemDTO() {
+
+    }
+
 
     public Long getId() {
         return id;
@@ -34,51 +31,27 @@ public class ShoppingCartItemDTO {
         this.id = id;
     }
 
-    public Long getShoppingCart() {
-        return shoppingCart;
+    public Long getVehicleId() {
+        return vehicleId;
     }
 
-    public void setShoppingCart(Long shoppingCart) {
-        this.shoppingCart = shoppingCart;
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
     }
 
-    public Long getVehicle() {
-        return vehicle;
+    public String getVehicleName() {
+        return vehicleName;
     }
 
-    public void setVehicle(Long vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

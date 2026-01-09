@@ -30,7 +30,10 @@ public class ShoppingCartItem {
         
     }
 
-    public ShoppingCartItem(Long id, Long shoppingCart, String vehicle, LocalDateTime createdAt) {
+    public ShoppingCartItem(ShoppingCart shoppingCart, Vehicle vehicle, User createdBy) {
+        this.shoppingCart = shoppingCart;
+        this.vehicle = vehicle;
+        this.createdBy = createdBy;
     }
 
     @Id
