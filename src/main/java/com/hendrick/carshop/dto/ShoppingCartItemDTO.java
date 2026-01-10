@@ -11,6 +11,8 @@ public class ShoppingCartItemDTO {
     private String vehicleName;
     private BigDecimal price;
 
+
+
     public ShoppingCartItemDTO(Long id, Long vehicleId, String vehicleName, BigDecimal price) {
         this.id = id;
         this.vehicleId = vehicleId;

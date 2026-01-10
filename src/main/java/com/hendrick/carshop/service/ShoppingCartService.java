@@ -1,8 +1,8 @@
 package com.hendrick.carshop.service;
 
+import com.hendrick.carshop.dto.ShoppingCartAddItemDTO;
 import com.hendrick.carshop.dto.ShoppingCartDTO;
 import com.hendrick.carshop.dto.ShoppingCartItemDTO;
-import com.hendrick.carshop.dto.VehicleDTO;
 import com.hendrick.carshop.enums.ShoppingCartStatus;
 import com.hendrick.carshop.enums.VehicleStatus;
 import com.hendrick.carshop.model.Client;
@@ -91,24 +91,34 @@ public class ShoppingCartService {
 
     public ShoppingCartDTO addItemToCart(Long userId, Long vehicleId) {
 
+        //find client with the userid.
         Client client = clientRepository.findByUserId(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
 
+        //find vehicle using vehicle id and the status.
         Vehicle vehicle = vehicleRepository.findByIdAndStatus(vehicleId, VehicleStatus.AVAILABLE).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not avaliable."));
 
+        //find find cart with a client id and a active status, if the cart does not exist, create a client.
         ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseGet(() -> createNewCart(client));
 
+        // shopping cart gets with the method the item(vehicle) and the the user.
         shoppingCart.addItem(vehicle, client.getUser());
+
+        vehicle.setStatus(VehicleStatus.RESERVED);
 
         shoppingCart = shoppingCartRepository.save(shoppingCart);
 
-        ShoppingCartDTO dto = new ShoppingCartDTO();
-        dto.setId(shoppingCart.getId());
-        dto.setClientId(shoppingCart.getClient().getId());
-        dto.setStatus(shoppingCart.getStatus());
+        //save shoppingcart in the repository
+
+        // Create a DTO to expose cart data (id, clientId, status) to the controller
+        ShoppingCartDTO cartDTO = new ShoppingCartDTO();
+        cartDTO.setId(shoppingCart.getId());
+        cartDTO.setClientId(shoppingCart.getClient().getId());
+        cartDTO.setStatus(shoppingCart.getStatus());
+
+        // This list will hold ShoppingCartItemDTO objects (not entities)
         List<ShoppingCartItemDTO> shoppingCartItemDTO = new ArrayList<>();
 
-
-
+        // Convert each ShoppingCartItem entity into a ShoppingCartItemDTO
         for (ShoppingCartItem cart : shoppingCart.getItems()) {
 
             ShoppingCartItemDTO itemDTO = new ShoppingCartItemDTO();
@@ -116,28 +126,49 @@ public class ShoppingCartService {
             itemDTO.setVehicleId(cart.getVehicle().getId());
             itemDTO.setVehicleName(cart.getVehicle().getModel().getName());
             itemDTO.setPrice(cart.getVehicle().getPrice());
-
-
+            // Add the mapped item DTO to the cart item DTO list
             shoppingCartItemDTO.add(itemDTO);
 
+        }
+
+        // Attach the list of item DTOs to the cart DTO
+        cartDTO.setItems(shoppingCartItemDTO);
+        // Set the total number of items in the cart
+        cartDTO.setTotalItems(shoppingCart.getItems().size());
+        //Set the total number of items in the cart
+        cartDTO.setItems(shoppingCartItemDTO);
+                                                    //“Turn this list into a stream so I can process its elements one by one.”
+        BigDecimal totalValue = shoppingCart.getItems().stream()//stream is a pipeline or a path to process one by one
+                .map(cart -> cart.getVehicle().getPrice()) //transformation: For each item, take it and transform it into its price
+                //combine: Start with ZERO and keep adding each price
+                .reduce(BigDecimal.ZERO, BigDecimal::add);//add:: is a accumulator +=
+        cartDTO.setTotalValue(totalValue);
+
+        vehicleRepository.save(vehicle);
+
+        return cartDTO;
+
+    }
+
+    private List<ShoppingCartItemDTO> findAllById(Long shoppinCartItemId){
+
+        ShoppingCartItem shoppingCartItem = shoppingCartRepository.findAllById(shoppinCartItemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping Cart not found."));
+
+        List<ShoppingCartItem> cartList = shoppingCartItemRepository.findAllById(shoppinCartItemId);
+        List<ShoppingCartItemDTO> cartItemDTOS = new ArrayList<>();
+
+        for (ShoppingCartItem cart : cartList) {
+
+            ShoppingCartItemDTO dto = new ShoppingCartItemDTO();
+            dto.setId(cart.getId());
+            dto.setVehicleId(cart.getVehicle().getId());
+            dto.setVehicleName(cart.getVehicle().getModel().getName());
+            dto.setPrice(cart.getVehicle().getPrice());
+            cartItemDTOS.add(dto);
 
         }
-        dto.setItems(shoppingCartItemDTO);
-        dto.setTotalItems(shoppingCart.getItems().size());
-        dto.setItems(shoppingCartItemDTO);
-        BigDecimal totalValue = shoppingCart.getItems().stream()
-                .map(cart -> cart.getVehicle().getPrice())
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-            dto.setTotalValue(totalValue);
-            return dto;
-//        List<ShoppingCartItem> cartItems =  shoppingCartItemRepository.findAllById(vehicleId);
-//        List<VehicleDTO> vehicleDTOList = new ArrayList<>();
-//
-//        for (ShoppingCartItem item : cartItems){
-//
-//            VehicleDTO vehicleDTO = new VehicleDTO();
-//            vehicleDTO.setId(item.getVehicle().getId());
 
+        return cartItemDTOS;
 
     }
 

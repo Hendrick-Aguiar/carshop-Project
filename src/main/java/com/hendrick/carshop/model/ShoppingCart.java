@@ -143,7 +143,7 @@ public class ShoppingCart {
 
         if (alreadyExists) {
 
-            throw new IllegalArgumentException("Vehicle in the way.");
+            throw new IllegalArgumentException("Vehicle on the way.");
 
         }
 
