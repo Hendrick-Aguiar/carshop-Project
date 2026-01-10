@@ -1,9 +1,6 @@
 package com.hendrick.carshop.controller;
 
-import com.hendrick.carshop.dto.CartDTO;
-import com.hendrick.carshop.dto.ShoppingCartAddItemDTO;
-import com.hendrick.carshop.dto.ShoppingCartDTO;
-import com.hendrick.carshop.dto.VehicleDTO;
+import com.hendrick.carshop.dto.*;
 import com.hendrick.carshop.service.ShoppingCartItemService;
 import com.hendrick.carshop.service.ShoppingCartService;
 import org.springframework.http.ResponseEntity;
@@ -34,20 +31,18 @@ public class ShoppingCartController {
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ShoppingCartDTO> findCart(@PathVariable Long id) {
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ShoppingCartDTO> findCart(@PathVariable Long id) {
+//
+//        return ResponseEntity.ok(shoppingCartService.getOrCreateActiveCart(id));
+//
+//    }
 
-        return ResponseEntity.ok(shoppingCartService.getOrCreateActiveCart(id));
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<ShoppingCartItemDTO>> findAll(@PathVariable Long id){
+
+        return ResponseEntity.ok(shoppingCartService.findAllById(id));
 
     }
-
-    @GetMapping("/cartlist")
-    public ResponseEntity<List<ShoppingCartDTO> findAll(@PathVariable Long userId){
-
-        return ResponseEntity.ok(shoppingCartService.;
-
-    }
-
-
 
 }

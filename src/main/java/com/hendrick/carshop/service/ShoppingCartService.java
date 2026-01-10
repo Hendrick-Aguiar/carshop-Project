@@ -1,6 +1,5 @@
 package com.hendrick.carshop.service;
 
-import com.hendrick.carshop.dto.ShoppingCartAddItemDTO;
 import com.hendrick.carshop.dto.ShoppingCartDTO;
 import com.hendrick.carshop.dto.ShoppingCartItemDTO;
 import com.hendrick.carshop.enums.ShoppingCartStatus;
@@ -150,14 +149,14 @@ public class ShoppingCartService {
 
     }
 
-    private List<ShoppingCartItemDTO> findAllById(Long shoppinCartItemId){
+    public List<ShoppingCartItemDTO> findAllById(Long shoppinCartItemId){
 
-        ShoppingCartItem shoppingCartItem = shoppingCartRepository.findAllById(shoppinCartItemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping Cart not found."));
+        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findAllById(shoppinCartItemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping Cart not found."));
 
-        List<ShoppingCartItem> cartList = shoppingCartItemRepository.findAllById(shoppinCartItemId);
+        Optional<List<ShoppingCartItem>> cartList = shoppingCartItemRepository.findAllListsById(shoppinCartItemId);
         List<ShoppingCartItemDTO> cartItemDTOS = new ArrayList<>();
 
-        for (ShoppingCartItem cart : cartList) {
+        for (ShoppingCartItem cart : cartList.orElse(null)) {
 
             ShoppingCartItemDTO dto = new ShoppingCartItemDTO();
             dto.setId(cart.getId());
