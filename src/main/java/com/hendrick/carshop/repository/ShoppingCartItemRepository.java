@@ -1,5 +1,6 @@
 package com.hendrick.carshop.repository;
 
+import com.hendrick.carshop.enums.VehicleStatus;
 import com.hendrick.carshop.model.ShoppingCartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import java.util.Optional;
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
 ;
-    Optional<List<ShoppingCartItem>> findAllListsById(Long shoppinCartItemId);
-    Optional<ShoppingCartItem> findAllById(Long shoppingCartItemId);
+    Optional<ShoppingCartItem> findAllByShoppingCartId(Long id);
+    List<ShoppingCartItem> findAndListAllByShoppingCartId(Long id);
+    Optional<ShoppingCartItem> findVehicleById(Long vehicleId, VehicleStatus status);
 }

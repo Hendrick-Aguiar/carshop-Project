@@ -31,17 +31,17 @@ public class ShoppingCartController {
 
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ShoppingCartDTO> findCart(@PathVariable Long id) {
-//
-//        return ResponseEntity.ok(shoppingCartService.getOrCreateActiveCart(id));
-//
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ShoppingCartDTO> findCart(@PathVariable Long id) {
+
+        return ResponseEntity.ok(shoppingCartService.getOrCreateActiveCart(id));
+
+    }
 
     @GetMapping("/{id}/items")
     public ResponseEntity<List<ShoppingCartItemDTO>> findAll(@PathVariable Long id){
 
-        return ResponseEntity.ok(shoppingCartService.findAllById(id));
+        return ResponseEntity.ok(shoppingCartService.findActiveCartByUserId(id));
 
     }
 

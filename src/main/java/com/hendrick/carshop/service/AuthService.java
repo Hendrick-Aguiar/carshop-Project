@@ -21,6 +21,7 @@ public class AuthService {
     private final ClientRepository clientRepository;
     private final UserRepository userRepository;
 
+
     public AuthService(ClientRepository clientRepository, UserRepository userRepository) {
 
         this.clientRepository = clientRepository;
@@ -70,7 +71,7 @@ public class AuthService {
         dto.setCpf(client.getCpf());
         dto.setPhone(client.getPhone());
         dto.setLogin(user.getLogin());
-        dto.setPassword(user.getPasswordHash());
+
 
         return dto;
 

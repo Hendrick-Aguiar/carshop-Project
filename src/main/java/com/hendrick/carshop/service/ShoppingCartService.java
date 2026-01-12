@@ -4,14 +4,12 @@ import com.hendrick.carshop.dto.ShoppingCartDTO;
 import com.hendrick.carshop.dto.ShoppingCartItemDTO;
 import com.hendrick.carshop.enums.ShoppingCartStatus;
 import com.hendrick.carshop.enums.VehicleStatus;
-import com.hendrick.carshop.model.Client;
-import com.hendrick.carshop.model.ShoppingCart;
-import com.hendrick.carshop.model.ShoppingCartItem;
-import com.hendrick.carshop.model.Vehicle;
+import com.hendrick.carshop.model.*;
 import com.hendrick.carshop.repository.ClientRepository;
 import com.hendrick.carshop.repository.ShoppingCartItemRepository;
 import com.hendrick.carshop.repository.ShoppingCartRepository;
 import com.hendrick.carshop.repository.VehicleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -149,25 +147,55 @@ public class ShoppingCartService {
 
     }
 
-    public List<ShoppingCartItemDTO> findAllById(Long shoppinCartItemId){
+    public List<ShoppingCartItemDTO> findActiveCartByUserId(Long id){
 
-        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findAllById(shoppinCartItemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping Cart not found."));
+        Client client = clientRepository.findByUserId(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
 
-        Optional<List<ShoppingCartItem>> cartList = shoppingCartItemRepository.findAllListsById(shoppinCartItemId);
+        ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping Cart not found."));
+
+        List<ShoppingCartItem> items = shoppingCartItemRepository.findAndListAllByShoppingCartId(shoppingCart.getId());
+
+        if (items.isEmpty()){
+
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No items found in the cart.");
+
+        }
+
         List<ShoppingCartItemDTO> cartItemDTOS = new ArrayList<>();
 
-        for (ShoppingCartItem cart : cartList.orElse(null)) {
+        for (ShoppingCartItem item : items) {
 
             ShoppingCartItemDTO dto = new ShoppingCartItemDTO();
-            dto.setId(cart.getId());
-            dto.setVehicleId(cart.getVehicle().getId());
-            dto.setVehicleName(cart.getVehicle().getModel().getName());
-            dto.setPrice(cart.getVehicle().getPrice());
+            dto.setId(item.getId());
+            dto.setVehicleId(item.getVehicle().getId());
+            dto.setVehicleName(item.getVehicle().getModel().getName());
+            dto.setPrice(item.getVehicle().getPrice());
             cartItemDTOS.add(dto);
 
         }
 
         return cartItemDTOS;
+    }
+    @Transactional
+    public void deleteCartitemChangeStatus(Long cartItemId){
+
+        //Find user client
+        Client client = clientRepository.findByUserId(cartItemId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+
+        //Find client on shoppincart
+        ShoppingCart shoppingCart = shoppingCartRepository.findByClientId(client).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not reserved"));
+
+        //find cart item by id and the status
+        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findVehicleById(cartItemId ,VehicleStatus.RESERVED).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle not found."));
+
+        Vehicle vehicle = shoppingCartItem.getVehicle();
+
+        vehicle.setStatus(VehicleStatus.AVAILABLE);
+
+        vehicleRepository.save(vehicle);
+
+        shoppingCartItemRepository.delete(shoppingCartItem);
+
 
     }
 
