@@ -2,6 +2,7 @@ package com.hendrick.carshop.controller;
 
 import com.hendrick.carshop.dto.ModelDTO;
 import com.hendrick.carshop.service.ModelService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class ModelController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ModelDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<ModelDTO> findById(@PathVariable Long id, HttpSession session) {
 
         return ResponseEntity.ok(modelService.findById(id));
 
@@ -30,7 +31,7 @@ public class ModelController {
 
 
     @GetMapping
-    public ResponseEntity<List<ModelDTO>> findAll() {
+    public ResponseEntity<List<ModelDTO>> findAll(HttpSession session) {
 
         return ResponseEntity.ok(modelService.findAll());
 

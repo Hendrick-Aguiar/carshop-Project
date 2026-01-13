@@ -9,6 +9,7 @@ import com.hendrick.carshop.repository.ClientRepository;
 import com.hendrick.carshop.repository.ShoppingCartItemRepository;
 import com.hendrick.carshop.repository.ShoppingCartRepository;
 import com.hendrick.carshop.repository.VehicleRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

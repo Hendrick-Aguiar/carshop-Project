@@ -25,8 +25,8 @@ public class AuthController {
     }
 
     //Create: user and client
-    @PostMapping
-    public ResponseEntity<ClientDTO> register(@RequestBody ClientDTO dto) throws URISyntaxException {
+    @PostMapping("/register")
+    public ResponseEntity<ClientDTO> register(@RequestBody ClientDTO dto, HttpSession session) throws URISyntaxException {
 
         return ResponseEntity.ok(authService.register(dto));
 
@@ -49,7 +49,7 @@ public class AuthController {
 
     //Update: update User and Client
     @PutMapping("/{cpf}")
-    public ResponseEntity<ClientDTO> update(@PathVariable String cpf, @RequestBody ClientDTO dto) {
+    public ResponseEntity<ClientDTO> update(@PathVariable String cpf, @RequestBody ClientDTO dto, HttpSession session   ) {
 
         dto = authService.update(cpf, dto);
         return ResponseEntity.ok(dto);

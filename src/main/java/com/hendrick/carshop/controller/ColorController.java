@@ -3,6 +3,7 @@ package com.hendrick.carshop.controller;
 import com.hendrick.carshop.dto.ColorDTO;
 import com.hendrick.carshop.model.Color;
 import com.hendrick.carshop.service.ColorService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
