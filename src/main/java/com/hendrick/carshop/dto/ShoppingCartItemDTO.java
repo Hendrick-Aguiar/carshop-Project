@@ -1,7 +1,6 @@
 package com.hendrick.carshop.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class ShoppingCartItemDTO {
 

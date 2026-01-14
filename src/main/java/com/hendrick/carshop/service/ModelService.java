@@ -22,7 +22,7 @@ public class ModelService {
 
     }
 
-    //Read: byid
+    //Read: by id
     public ModelDTO findById(Long id) {
 
         Model model = modelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id not Found."));

@@ -1,5 +1,6 @@
 package com.hendrick.carshop.dto;
 
+
 public class AuthDTO {
 
     private String login;
@@ -26,3 +27,4 @@ public class AuthDTO {
         this.password = password;
     }
 }
+

@@ -15,13 +15,14 @@ public final class BrandController {
 
     private final BrandService brandService;
 
-    public BrandController(BrandService brandService){
+    public BrandController(BrandService brandService) {
 
         this.brandService = brandService;
 
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<BrandDTO> findById(@PathVariable Long id) {
+
+    @GetMapping("/id")
+    public ResponseEntity<BrandDTO> findById(@RequestBody Long id) {
 
         return ResponseEntity.ok(brandService.findById(id));
 
@@ -29,13 +30,11 @@ public final class BrandController {
 
     //Read: Find all
     @GetMapping
-    public ResponseEntity<List<BrandDTO>> findAll(HttpSession session){
+    public ResponseEntity<List<BrandDTO>> findAll() {
 
         return ResponseEntity.ok(brandService.findAll());
 
     }
-
-
 
 
 }

@@ -3,7 +3,7 @@ package com.hendrick.carshop.dto;
 import com.hendrick.carshop.enums.Role;
 
 
-public class LoginResponseDTO {
+public class UpdateResponseDTO {
 
 
     private Long userId;
@@ -17,9 +17,9 @@ public class LoginResponseDTO {
     private String login;
     private String password;
 
-     public LoginResponseDTO(){}
+     public UpdateResponseDTO(){}
 
-    public LoginResponseDTO(Long userId, Long clientId, Role role, Boolean active, String name, String email, String cpf, String phone, String login, String password) {
+    public UpdateResponseDTO(Long userId, Long clientId, Role role, Boolean active, String name, String email, String cpf, String phone, String login, String password) {
         this.userId = userId;
         this.clientId = clientId;
         this.role = role;

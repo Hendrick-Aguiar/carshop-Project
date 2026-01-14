@@ -1,8 +1,6 @@
 package com.hendrick.carshop.dto;
 
 
-import com.hendrick.carshop.model.User;
-
 import java.time.LocalDateTime;
 
 public class BrandDTO {

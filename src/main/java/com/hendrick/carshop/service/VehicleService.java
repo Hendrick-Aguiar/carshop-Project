@@ -1,6 +1,7 @@
 package com.hendrick.carshop.service;
 
 import com.hendrick.carshop.dto.VehicleDTO;
+import com.hendrick.carshop.enums.VehicleStatus;
 import com.hendrick.carshop.model.Vehicle;
 import com.hendrick.carshop.repository.VehicleRepository;
 import org.springframework.http.HttpStatus;
@@ -48,31 +49,35 @@ public class VehicleService {
 
     public List<VehicleDTO> findAll() {
 
+
         List<Vehicle> vehicles = vehicleRepository.findAll();
+
         List<VehicleDTO> vehicleDTOList = new ArrayList<>();
 
         for (Vehicle vehicle : vehicles) {
 
-            VehicleDTO dto = new VehicleDTO();
-            dto.setId(vehicle.getId());
-            dto.setLicencePlate(vehicle.getLicencePlate());
-            dto.setChassis(vehicle.getChassis());
-            dto.setRenavam(vehicle.getRenavam());
-            dto.setYear(vehicle.getYear());
-            dto.setBrandId(vehicle.getModel().getBrand().getId());
-            dto.setBrand(vehicle.getModel().getBrand().getName());
-            dto.setModelId(vehicle.getModel().getId());
-            dto.setModel(vehicle.getModel().getName());
-            dto.setColorId(vehicle.getColor().getId());
-            dto.setColor(vehicle.getColor().getName());
-            dto.setPrice(vehicle.getPrice());
-            dto.setStatus(vehicle.getStatus());
-            vehicleDTOList.add(dto);
-
+            if (vehicle.getStatus().equals(VehicleStatus.AVAILABLE)) {
+                VehicleDTO dto = new VehicleDTO();
+                dto.setId(vehicle.getId());
+                dto.setLicencePlate(vehicle.getLicencePlate());
+                dto.setChassis(vehicle.getChassis());
+                dto.setRenavam(vehicle.getRenavam());
+                dto.setYear(vehicle.getYear());
+                dto.setBrandId(vehicle.getModel().getBrand().getId());
+                dto.setBrand(vehicle.getModel().getBrand().getName());
+                dto.setModelId(vehicle.getModel().getId());
+                dto.setModel(vehicle.getModel().getName());
+                dto.setColorId(vehicle.getColor().getId());
+                dto.setColor(vehicle.getColor().getName());
+                dto.setPrice(vehicle.getPrice());
+                dto.setStatus(vehicle.getStatus());
+                vehicleDTOList.add(dto);
+            }
         }
 
         return vehicleDTOList;
 
     }
+
 
 }

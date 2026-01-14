@@ -1,6 +1,5 @@
 package com.hendrick.carshop.dto;
 
-
 public class ClientDTO {
 
     private Long id;
@@ -11,7 +10,6 @@ public class ClientDTO {
     private String cpf;
     private String phone;
 
-
     public ClientDTO(Long id, String login, String password, String name, String email, String cpf, String phone) {
         this.id = id;
         this.login = login;
@@ -21,6 +19,8 @@ public class ClientDTO {
         this.cpf = cpf;
         this.phone = phone;
     }
+
+    public ClientDTO(){}
 
     public Long getId() {
         return id;
@@ -78,3 +78,4 @@ public class ClientDTO {
         this.phone = phone;
     }
 }
+

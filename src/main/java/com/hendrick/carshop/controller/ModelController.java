@@ -22,8 +22,8 @@ public class ModelController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ModelDTO> findById(@PathVariable Long id, HttpSession session) {
+    @GetMapping("/id")
+    public ResponseEntity<ModelDTO> findById(@RequestBody Long id) {
 
         return ResponseEntity.ok(modelService.findById(id));
 
@@ -31,7 +31,7 @@ public class ModelController {
 
 
     @GetMapping
-    public ResponseEntity<List<ModelDTO>> findAll(HttpSession session) {
+    public ResponseEntity<List<ModelDTO>> findAll() {
 
         return ResponseEntity.ok(modelService.findAll());
 

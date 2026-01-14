@@ -1,5 +1,6 @@
 package com.hendrick.carshop.controller;
 
+import com.hendrick.carshop.dto.ShoppingCartItemDTO;
 import com.hendrick.carshop.dto.VehicleDTO;
 import com.hendrick.carshop.service.VehicleService;
 import jakarta.servlet.http.HttpSession;
@@ -15,14 +16,14 @@ public class VehicleController {
 
     private final VehicleService vehicleService;
 
-    public VehicleController(VehicleService vehicleService){
+    public VehicleController(VehicleService vehicleService) {
 
         this.vehicleService = vehicleService;
 
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VehicleDTO> findById(@PathVariable Long id, HttpSession session){
+    public ResponseEntity<VehicleDTO> findById(@PathVariable Long id, HttpSession session) {
 
         return ResponseEntity.ok(vehicleService.findById(id));
 
@@ -31,10 +32,10 @@ public class VehicleController {
     @GetMapping
     public ResponseEntity<List<VehicleDTO>> findAll(HttpSession session) {
 
+
         return ResponseEntity.ok(vehicleService.findAll());
 
     }
-
 
 
 }

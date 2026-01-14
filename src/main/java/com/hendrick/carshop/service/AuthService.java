@@ -1,14 +1,13 @@
 package com.hendrick.carshop.service;
 
-import com.hendrick.carshop.dto.ClientDTO;
-import com.hendrick.carshop.dto.AuthDTO;
-import com.hendrick.carshop.dto.LoginResponseDTO;
+import com.hendrick.carshop.dto.*;
 import com.hendrick.carshop.enums.Role;
 import com.hendrick.carshop.model.Client;
 import com.hendrick.carshop.model.User;
 import com.hendrick.carshop.repository.ClientRepository;
 import com.hendrick.carshop.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,35 +19,42 @@ public class AuthService {
 
     private final ClientRepository clientRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder encode;
 
 
-    public AuthService(ClientRepository clientRepository, UserRepository userRepository) {
+    public AuthService(ClientRepository clientRepository, UserRepository userRepository, PasswordEncoder encode) {
 
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
 
+        this.encode = encode;
     }
 
     //Create
     public ClientDTO register(ClientDTO dto) {
 
         //Login: User and password
-        Optional<User> userOptional = userRepository.findByLogin(dto.getLogin());
-        if (userOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Login already registered.");
+        Optional<User> userSearch = userRepository.findByLogin(dto.getLogin());
+
+        if (userSearch.isPresent()) {
+
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The user is already registered.");
+
         }
 
-        //After login: Check clientes with the same cpf
-        Optional<Client> clientOptional = clientRepository.findByCpf(dto.getCpf());
-        if (clientOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Client already registered with this CPF.");
-        }
+        //Check if client is register
+        Optional<Client> clientFinder = clientRepository.findClientByName(dto.getName());
 
+        if (clientFinder.isPresent()) {
+
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The client is already registered.");
+
+        }
 
         //Creating the user(Login Credenctials)
         User user = new User();
         user.setLogin(dto.getLogin());
-        user.setPasswordHash(dto.getPassword());
+        user.setPasswordHash(encode.encode(dto.getPassword()));
         user.setRole(Role.USER);
         user.setActive(Boolean.TRUE);
         user.setCreatedAt(LocalDateTime.now());
@@ -78,23 +84,16 @@ public class AuthService {
     }
 
     //Read
-    public LoginResponseDTO login(AuthDTO dto) {
+    public UpdateResponseDTO login(AuthDTO dto) {
 
         //finding user by login
-        Optional<User> userOptional = userRepository.findByLogin(dto.getLogin());
-
-        if (!userOptional.isPresent()) {
-
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
-
-        }
 
         //Optional<Color> colorOptional = colorRepository.findById(id); Optional not return;
         //best practice using this Optional(orElseThrow) and not using Optional and if(!userOptional.IsPresent)
         //Fetching the entities from database
         User user = userRepository.findByLogin(dto.getLogin()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
         //building the responsedto
-        LoginResponseDTO logResDTO = new LoginResponseDTO();
+        UpdateResponseDTO logResDTO = new UpdateResponseDTO();
         logResDTO.setUserId(user.getId());
         logResDTO.setLogin(user.getLogin());
         logResDTO.setRole(user.getRole());
@@ -117,42 +116,35 @@ public class AuthService {
     }
 
     //Update
-    public ClientDTO update(String cpf, ClientDTO dto) {
+    public UpdateResponseDTO update(Long userId, UpdateClientDTO requestDTO) {
 
         //finding cliente with cpf
-        Optional<Client> clientOptional = clientRepository.findByCpf(cpf);
-        if (clientOptional.isEmpty()) {
 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
-
-        }
+        Client client = clientRepository.findByUserId(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        //dto data
 
 
-        //updating associated user data
-        User user = new User();
-        user.setId(dto.getId());
-        user.setLogin(dto.getLogin());
-        user.setPasswordHash(dto.getPassword());
+        //update dto data to client
 
-        //updating client data
-        Client client = clientOptional.get();
-        client.setName(dto.getName());
-        client.setCpf(dto.getCpf());
-        client.setPhone(dto.getPhone());
-        client.setEmail(dto.getEmail());
-        client = clientRepository.save(client);//saving
+        client.setName(requestDTO.getName());
+        client.setPhone(requestDTO.getPhone());
+        client.setEmail(requestDTO.getEmail());
 
-        //user receve client
-        user = client.getUser();
-        user = userRepository.save(user);
+        //save
+        client = clientRepository.save(client);
+
 
         //update to dto return
-        dto.setId(user.getId());
+        UpdateResponseDTO dto = new UpdateResponseDTO();
+        dto.setUserId(client.getUser().getId());
+        dto.setLogin(client.getUser().getLogin());
+        dto.setRole(client.getUser().getRole());
+        dto.setActive(client.getUser().getActive());
+        dto.setClientId(client.getId());
+        dto.setCpf(client.getCpf());
         dto.setName(client.getName());
         dto.setPhone(client.getPhone());
         dto.setEmail(client.getEmail());
-        dto.setLogin(user.getLogin());
-        dto.setPassword(user.getPasswordHash());
 
 
         return dto;

@@ -1,10 +1,8 @@
 package com.hendrick.carshop.dto;
 
 import com.hendrick.carshop.enums.ShoppingCartStatus;
-import com.hendrick.carshop.model.ShoppingCart;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class ShoppingCartDTO {

@@ -15,7 +15,7 @@ public class BrandService {
 
     private final BrandRepository brandRepository;
 
-    public BrandService(BrandRepository brandrepository){
+    public BrandService(BrandRepository brandrepository) {
 
         this.brandRepository = brandrepository;
 
@@ -23,9 +23,9 @@ public class BrandService {
 
 
     //Read: readbyid
-    public BrandDTO findById(Long id){
+    public BrandDTO findById(Long id) {
 
-        Brand brand = brandRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Brand not found"));
+        Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Brand not found"));
 
         BrandDTO dto = new BrandDTO();
         dto.setId(brand.getId());
@@ -36,24 +36,23 @@ public class BrandService {
     }
 
     //Read: fetch all
-    public List<BrandDTO> findAll(){
-       //in
-       List<Brand> brands= brandRepository.findAll();
-       //out
-       List<BrandDTO> brandList = new ArrayList<>();
+    public List<BrandDTO> findAll() {
+        //in
+        List<Brand> brands = brandRepository.findAll();
+        //out
+        List<BrandDTO> brandList = new ArrayList<>();
 
-       //Fetch brandRepository
-       for (Brand brand: brands){
+        //Fetch brandRepository
+        for (Brand brand : brands) {
 
-           //brand find send to dto
-           BrandDTO dto = new BrandDTO();
-           dto.setId(brand.getId());
-           dto.setName(brand.getName());
-           brandList.add(dto);
+            //brand find send to dto
+            BrandDTO dto = new BrandDTO();
+            dto.setId(brand.getId());
+            dto.setName(brand.getName());
+            brandList.add(dto);
 
-       }
-       return brandList;
-
+        }
+        return brandList;
 
 
     }

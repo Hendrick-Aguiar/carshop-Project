@@ -29,6 +29,27 @@ public class VehicleDTO {
     public VehicleDTO() {
     }
 
+    public VehicleDTO(Long id, String licencePlate, String chassis, String renavam, int year, Long modelId, String model, Long brandId, String brand, Long colorId, String color, BigDecimal price, VehicleStatus status, Long shoppingCartItem, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
+        this.id = id;
+        this.licencePlate = licencePlate;
+        this.chassis = chassis;
+        this.renavam = renavam;
+        this.year = year;
+        this.modelId = modelId;
+        this.model = model;
+        this.brandId = brandId;
+        this.brand = brand;
+        this.colorId = colorId;
+        this.color = color;
+        this.price = price;
+        this.status = status;
+        this.shoppingCartItem = shoppingCartItem;
+        this.createdAt = createdAt;
+        this.createdBy = createdBy;
+        this.updatedAt = updatedAt;
+        this.updatedBy = updatedBy;
+    }
+
     public Long getId() {
         return id;
     }
@@ -173,24 +194,5 @@ public class VehicleDTO {
         this.updatedBy = updatedBy;
     }
 
-    public VehicleDTO(Long id, String licencePlate, String chassis, String renavam, int year, Long modelId, String model, Long brandId, String brand, Long colorId, String color, BigDecimal price, VehicleStatus status, Long shoppingCartItem, LocalDateTime createdAt, String createdBy, LocalDateTime updatedAt, String updatedBy) {
-        this.id = id;
-        this.licencePlate = licencePlate;
-        this.chassis = chassis;
-        this.renavam = renavam;
-        this.year = year;
-        this.modelId = modelId;
-        this.model = model;
-        this.brandId = brandId;
-        this.brand = brand;
-        this.colorId = colorId;
-        this.color = color;
-        this.price = price;
-        this.status = status;
-        this.shoppingCartItem = shoppingCartItem;
-        this.createdAt = createdAt;
-        this.createdBy = createdBy;
-        this.updatedAt = updatedAt;
-        this.updatedBy = updatedBy;
-    }
+
 }
