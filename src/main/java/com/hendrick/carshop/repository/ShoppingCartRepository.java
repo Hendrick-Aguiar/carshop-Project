@@ -15,7 +15,7 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
 
 
 
-    Optional<ShoppingCart> findByClientId(Client client);
+    Optional<ShoppingCart> findByClient(Client client);
 
     Optional<ShoppingCart> findByClientAndStatus(Client client, ShoppingCartStatus status);
 

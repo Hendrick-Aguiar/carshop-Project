@@ -12,13 +12,15 @@ import java.util.Optional;
 @Repository
 public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem, Long> {
 
-    ;
-//
-//    Optional<ShoppingCartItem> findByShoppingCartId(ShoppingCart shoppingCart);
-//
+
+
+    Optional<ShoppingCartItem> findById(Long cartItemId);
+
+    Optional<ShoppingCartItem> findByShoppingCartId(ShoppingCart cartItemId);
+
 //    Optional<ShoppingCartItem> findByStatus(VehicleStatus status);
 
-    List<ShoppingCartItem> findAndListAllByShoppingCartId(Long id);
+    List<ShoppingCartItem> findAndListAllByShoppingCart(ShoppingCart shoppingCart);
 
 //    Optional<ShoppingCartItem> findVehicleStatus(Long vehicleId, VehicleStatus status);
 }

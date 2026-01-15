@@ -28,9 +28,11 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/item")
-    public ResponseEntity<ShoppingCartDTO> addItemsToCart(@RequestBody ShoppingCartAddItemDTO dto, HttpSession session) {
+    public ResponseEntity<ShoppingCartDTO> addItemsToCart(@PathVariable Long itemId, HttpSession session) {
 
-        return ResponseEntity.ok(shoppingCartService.addItemToCart(dto.getUserId(), dto.getVehicleId()));
+        Long userId = (Long) session.getAttribute("loggedUserId");
+
+        return ResponseEntity.ok(shoppingCartService.addItemToCart(userId, itemId));
 
 
     }
@@ -55,14 +57,14 @@ public class ShoppingCartController {
 
     }
 
-//    @GetMapping("/delete")
-//    public ResponseEntity<ShoppingCartDTO> deleteChangeStatus(@PathVariable Long cartItemId, HttpSession session) {
-//
-//        Long userId = (Long) session.getAttribute("loggedUserId");
-//
-//        return ResponseEntity.ok(shoppingCartService.deleteCartItemChangeStatus(userId, cartItemId));
-//
-//    }
+    @DeleteMapping("/delete/{cartItemId}")
+    public ResponseEntity<ShoppingCartDTO> deleteChangeStatus(@PathVariable Long cartItemId, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("loggedUserId");
+
+        return ResponseEntity.ok(shoppingCartService.deleteCartItemChangeStatus(userId, cartItemId));
+
+    }
 
 
 }
