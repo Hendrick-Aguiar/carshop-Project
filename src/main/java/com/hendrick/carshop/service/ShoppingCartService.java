@@ -4,14 +4,9 @@ import com.hendrick.carshop.dto.ShoppingCartDTO;
 import com.hendrick.carshop.dto.ShoppingCartItemDTO;
 import com.hendrick.carshop.enums.ShoppingCartStatus;
 import com.hendrick.carshop.enums.VehicleStatus;
-import com.hendrick.carshop.model.Client;
-import com.hendrick.carshop.model.ShoppingCart;
-import com.hendrick.carshop.model.ShoppingCartItem;
-import com.hendrick.carshop.model.Vehicle;
-import com.hendrick.carshop.repository.ClientRepository;
-import com.hendrick.carshop.repository.ShoppingCartItemRepository;
-import com.hendrick.carshop.repository.ShoppingCartRepository;
-import com.hendrick.carshop.repository.VehicleRepository;
+import com.hendrick.carshop.model.*;
+import com.hendrick.carshop.repository.*;
+import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,14 +21,16 @@ import java.util.Optional;
 public class ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
+    private final UserRepository userRepository;
     private final ClientRepository clientRepository;
     private final VehicleRepository vehicleRepository;
     private final ShoppingCartItemRepository shoppingCartItemRepository;
 
 
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository, ClientRepository clientRepository, VehicleRepository vehicleRepository, ShoppingCartItemRepository shoppingCartItemRepository) {
+    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository, UserRepository userRepository, ClientRepository clientRepository, VehicleRepository vehicleRepository, ShoppingCartItemRepository shoppingCartItemRepository) {
 
         this.shoppingCartRepository = shoppingCartRepository;
+        this.userRepository = userRepository;
         this.clientRepository = clientRepository;
         this.vehicleRepository = vehicleRepository;
         this.shoppingCartItemRepository = shoppingCartItemRepository;
@@ -88,10 +85,11 @@ public class ShoppingCartService {
         return shoppingCartRepository.save(cart);
     }
 
-    public ShoppingCartDTO addItemToCart(Long userId, Long vehicleId) {
+    public List<ShoppingCartItemDTO> addItemToCart(Long userId, Long vehicleId) {
 
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
         //find client with the userid.
-        Client client = clientRepository.findByUserId(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        Client client = clientRepository.findByUserId(user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
 
         //find vehicle using vehicle id and the status.
         Vehicle vehicle = vehicleRepository.findByIdAndStatus(vehicleId, VehicleStatus.AVAILABLE).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not avaliable."));
@@ -99,63 +97,78 @@ public class ShoppingCartService {
         //find find cart with a client id and a active status, if the cart does not exist, create a client.
         ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseGet(() -> createNewCart(client));
 
-        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findByShoppingCartId(shoppingCart).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found."));
 
         // shopping cart gets with the method the item(vehicle) and the the user.
+
         shoppingCart.addItem(vehicle, client.getUser());
+        shoppingCart = shoppingCartRepository.save(shoppingCart);
+        //save shoppingcart in the repository
+        Optional<ShoppingCartItem> CartItem = shoppingCartItemRepository.findByShoppingCartId(vehicle.getShoppingCartItem().getShoppingCart());
+
+        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+        shoppingCartItem.setShoppingCart(shoppingCart);
+        shoppingCartItem.setVehicle(vehicle);
+        shoppingCartItem.setCreatedAt(LocalDateTime.now());
+        shoppingCartItem.setCreatedBy(user);
+
 
         vehicle.setShoppingCartItem(shoppingCartItem);
-
         vehicle.setStatus(VehicleStatus.RESERVED);
 
-        shoppingCart = shoppingCartRepository.save(shoppingCart);
-
-        //save shoppingcart in the repository
-
-        // Create a DTO to expose cart data (id, clientId, status) to the controller
-        ShoppingCartDTO cartDTO = new ShoppingCartDTO();
-        cartDTO.setId(shoppingCart.getId());//
-        cartDTO.setClientId(shoppingCart.getClient().getId());
-        cartDTO.setStatus(shoppingCart.getStatus());
-
-        // This list will hold ShoppingCartItemDTO objects (not entities)
-        List<ShoppingCartItemDTO> shoppingCartItemDTO = getItemDTOS(shoppingCart);
-
-        // Attach the list of item DTOs to the cart DTO
-        cartDTO.setItems(shoppingCartItemDTO);
-        // Set the total number of items in the cart
-        cartDTO.setTotalItems(shoppingCart.getItems().size());
-        //Set the total number of items in the cart
-        cartDTO.setItems(shoppingCartItemDTO);
-        //“Turn this list into a stream so I can process its elements one by one.”
-        BigDecimal totalValue = shoppingCart.getItems().stream()//stream is a pipeline or a path to process one by one
-                .map(cart -> cart.getVehicle().getPrice()) //transformation: For each item, take it and transform it into its price
-                //combine: Start with ZERO and keep adding each price
-                .reduce(BigDecimal.ZERO, BigDecimal::add);//add:: is a accumulator +=
-        cartDTO.setTotalValue(totalValue);
+        shoppingCartItemRepository.save(shoppingCartItem);
 
         vehicleRepository.save(vehicle);
 
-        return cartDTO;
+
+        return getItemDTOS(userId);
 
     }
 
-    private static List<ShoppingCartItemDTO> getItemDTOS(ShoppingCart shoppingCart) {
-        List<ShoppingCartItemDTO> shoppingCartItemDTO = new ArrayList<>();
+    public List<ShoppingCartItemDTO> getItemDTOS(Long userId) {
 
-        // Convert each ShoppingCartItem entity into a ShoppingCartItemDTO
-        for (ShoppingCartItem cart : shoppingCart.getItems()) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+        Client client = clientRepository.findByUserId(user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        ShoppingCart shoppingCart = shoppingCartRepository.findByClient(client).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        ShoppingCartDTO dto = new ShoppingCartDTO();
+        dto.setId(shoppingCart.getId());
+        dto.setClientId(shoppingCart.getClient().getId());
+        dto.setStatus(shoppingCart.getStatus());
+
+        List<ShoppingCartItem> items = shoppingCartItemRepository.findAndListAllByShoppingCart(shoppingCart);
+        List<ShoppingCartItemDTO> listItems = new ArrayList<>();
+
+        for (ShoppingCartItem item : items) {
 
             ShoppingCartItemDTO itemDTO = new ShoppingCartItemDTO();
-            itemDTO.setId(cart.getId());
-            itemDTO.setVehicleId(cart.getVehicle().getId());
-            itemDTO.setVehicleName(cart.getVehicle().getModel().getName());
-            itemDTO.setPrice(cart.getVehicle().getPrice());
-            // Add the mapped item DTO to the cart item DTO list
-            shoppingCartItemDTO.add(itemDTO);
+            itemDTO.setId(item.getId());
+            itemDTO.setPrice(item.getVehicle().getPrice());
+            itemDTO.setVehicleId(item.getVehicle().getId());
+            itemDTO.setVehicleName(item.getVehicle().getModel().getName());
+            listItems.add(itemDTO);
 
         }
-        return shoppingCartItemDTO;
+        return listItems;
+
+
+    }
+
+    private ShoppingCartDTO sumItemsDTO(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+        Client client = clientRepository.findByUserId(user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        ShoppingCart shoppingCart = shoppingCartRepository.findByClient(client).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found."));
+
+        ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
+        //List and Stream items
+        List<ShoppingCartItemDTO> shoppingCartItemDTO = getItemDTOS(shoppingCart.getClient().getUser().getId());
+        shoppingCartDTO.setItems(shoppingCartItemDTO);
+        shoppingCartDTO.setTotalItems(shoppingCartItemDTO.size());
+
+        BigDecimal totalValues = shoppingCart.getItems().stream().map(cart -> cart.getVehicle().getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        shoppingCartDTO.setTotalValue(totalValues);
+        shoppingCartDTO.setItems(getItemDTOS(userId));
+
+        return shoppingCartDTO;
     }
 
     public List<ShoppingCartItemDTO> findActiveCartByUserId(Long id) {
@@ -191,14 +204,16 @@ public class ShoppingCartService {
 
     public ShoppingCartDTO deleteCartItemChangeStatus(Long userId, Long cartItemId) {
 
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
         //Find user client
-        Client client = clientRepository.findByUserId(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        Client client = clientRepository.findByUserId(user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
 
         //Find client on shoppincart
         ShoppingCart shoppingCart = shoppingCartRepository.findByClient(client).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Vehicle is not reserved"));
 
         //find cart item by id
-        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findById(cartItemId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found."));
+        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findById(cartItemId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart item no found."));
         // Vehicle Entity take shopping cart
         Vehicle vehicle = shoppingCartItem.getVehicle();
         //change the status Reserved to Available and save
@@ -208,28 +223,28 @@ public class ShoppingCartService {
         shoppingCartItemRepository.delete(shoppingCartItem);
         //Return remaining items from shopping cart
 
-        if (!shoppingCart.getItems().isEmpty()) {
 
-            ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
-            shoppingCartDTO.setId(shoppingCart.getId());
-            shoppingCartDTO.setClientId(shoppingCart.getClient().getId());
-            shoppingCartDTO.setStatus(shoppingCart.getStatus());
+        ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
+        shoppingCartDTO.setId(shoppingCart.getId());
+        shoppingCartDTO.setClientId(shoppingCart.getClient().getId());
+        shoppingCartDTO.setStatus(shoppingCart.getStatus());
 
-            List<ShoppingCartItemDTO> shoppingCartItemDTOList = getItemDTOS(shoppingCart);
-            shoppingCartDTO.setItems(shoppingCartItemDTOList);
-            shoppingCartDTO.setTotalItems(shoppingCartItemDTOList.size());
+        List<ShoppingCartItemDTO> shoppingCartItemDTOList = getItemDTOS(client.getUser().getId());
+        shoppingCartDTO.setItems(shoppingCartItemDTOList);
+        shoppingCartDTO.setTotalItems(shoppingCartItemDTOList.size());
 
-            BigDecimal totalValue = shoppingCart.getItems().stream().map(cart -> cart.getVehicle().getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalValue = shoppingCart.getItems()
+                .stream().map(cart -> cart.getVehicle()
+                        .getPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            vehicleRepository.save(vehicle);
+        vehicleRepository.save(vehicle);
 
-            shoppingCartDTO.setTotalValue(totalValue);
-            return shoppingCartDTO;
-        }
+        shoppingCartDTO.setTotalValue(totalValue);
+        return shoppingCartDTO;
 
-        return null;
+
     }
-
 }
 
 

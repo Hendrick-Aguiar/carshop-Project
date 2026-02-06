@@ -4,7 +4,10 @@ public enum VehicleStatus {
 
     AVAILABLE,
     RESERVED,
+    COMMITED,
+    SOLD_PENDING_DELIVERY,
     SOLD
+
 
 
 }

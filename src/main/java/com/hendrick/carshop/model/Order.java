@@ -1,9 +1,11 @@
 package com.hendrick.carshop.model;
 
+import com.hendrick.carshop.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(schema = "carshop_prdb", name = "orders")
@@ -12,14 +14,15 @@ public class Order {
     public Long id;
     private Client client;
     private BigDecimal TotalAmount;
-    private int status;
+    private OrderStatus status;
     private LocalDateTime createdAt;
     private User createdBy;
     private LocalDateTime updatedAt;
     private User updatedBy;
+//    private List<OrderItem> orderItem;
 
 
-    public Order(Long id, Client client, BigDecimal totalAmount, int status, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
+    public Order(Long id, Client client, BigDecimal totalAmount, OrderStatus status, LocalDateTime createdAt, User createdBy, LocalDateTime updatedAt, User updatedBy) {
         this.id = id;
         this.client = client;
         TotalAmount = totalAmount;
@@ -28,7 +31,10 @@ public class Order {
         this.createdBy = createdBy;
         this.updatedAt = updatedAt;
         this.updatedBy = updatedBy;
+//        this.orderItem = orderItem;
     }
+
+    public Order(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,11 +66,11 @@ public class Order {
     }
 
     @Column(name = "status")
-    public int getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -105,4 +111,15 @@ public class Order {
     public void setUpdatedBy(User updatedBy) {
         this.updatedBy = updatedBy;
     }
+
+//    //@OneToMany(mappedBy = "Order", cascade = CascadeType.ALL)
+//    public List<OrderItem> getOrderItem(){
+//
+//        return this.orderItem;
+//
+//    }
+//
+//    public void setOrderItem(List<OrderItem> orderItem) {
+//        this.orderItem = orderItem;
+//    }
 }

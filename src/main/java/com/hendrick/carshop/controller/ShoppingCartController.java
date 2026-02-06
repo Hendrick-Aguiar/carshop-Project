@@ -27,8 +27,8 @@ public class ShoppingCartController {
 
     }
 
-    @PostMapping("/item")
-    public ResponseEntity<ShoppingCartDTO> addItemsToCart(@PathVariable Long itemId, HttpSession session) {
+    @PostMapping("/item/{itemId}")
+    public ResponseEntity<List<ShoppingCartItemDTO>> addItemsToCart(@PathVariable Long itemId, HttpSession session) {
 
         Long userId = (Long) session.getAttribute("loggedUserId");
 
@@ -47,7 +47,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/items")
-    public ResponseEntity<List<ShoppingCartItemDTO>> findAllCartItems(HttpSession session) {
+    public ResponseEntity<List<ShoppingCartItemDTO>> findAllCartItems( HttpSession session) {
 
         System.out.println(">>> ENTROU NO CONTROLLER /carts/items");
         Long userId = (Long) session.getAttribute("loggedUserId");

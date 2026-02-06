@@ -30,6 +30,10 @@ public class OrderItem {
         this.updatedBy = updatedBy;
     }
 
+    public OrderItem() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
