@@ -68,6 +68,11 @@ public class ShoppingCartService {
         // 4. Mapping: Convert the Database Entity into a DTO (Data Transfer Object).
         // This hides internal DB fields and sends only what the frontend needs.
         ShoppingCartDTO dto = new ShoppingCartDTO();
+        dto.setId(cart.getId());
+        dto.setClientId(cart.getClient().getId());
+        dto.setStatus(cart.getStatus());
+        dto.setTotalItems(cart.getItems().size());
+        dto.setTotalValue(sumItemsDTO(client.getUser().getId()).getTotalValue());
 
 
         return dto;
@@ -119,8 +124,8 @@ public class ShoppingCartService {
 
         vehicleRepository.save(vehicle);
 
-
         return getItemDTOS(userId);
+
 
     }
 
@@ -173,7 +178,9 @@ public class ShoppingCartService {
 
     public List<ShoppingCartItemDTO> findActiveCartByUserId(Long id) {
 
-        Client client = clientRepository.findByUserId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
+        User user = userRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not Found."));
+
+        Client client = clientRepository.findByUserId(user.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
 
         ShoppingCart shoppingCart = shoppingCartRepository.findByClientAndStatus(client, ShoppingCartStatus.ACTIVE).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shopping Cart not found."));
 
@@ -202,7 +209,7 @@ public class ShoppingCartService {
     }
 
 
-    public ShoppingCartDTO deleteCartItemChangeStatus(Long userId, Long cartItemId) {
+    public ShoppingCartDTO deleteCartItemChangeStatus( Long userId, Long cartItemId) {
 
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
@@ -221,7 +228,7 @@ public class ShoppingCartService {
         vehicleRepository.save(vehicle);
         //delete items
         shoppingCartItemRepository.delete(shoppingCartItem);
-        //Return remaining items from shopping cart
+        //Return remaisning items from shopping cart
 
 
         ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();

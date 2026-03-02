@@ -22,7 +22,7 @@ public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartIt
 //    Optional<ShoppingCartItem> findByStatus(VehicleStatus status);
 
     List<ShoppingCartItem> findAndListAllByShoppingCart(ShoppingCart shoppingCart);
-    List<ShoppingCartItem> findByIdAndClientId(Long cartItemId,Client client);
+//    List<ShoppingCartItem> findByIdAndClientId(Long cartItemId,Client client);
 
 
 }
